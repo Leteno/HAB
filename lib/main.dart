@@ -31,9 +31,39 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _posX = 1;
+  double _posY = 0;
+  void _onClick() {
+    List<int> possibles = [1, 2, 3, 4, 5];
+    int index = possibles.indexOf(_posX);
+    if (++index >= possibles.length) {
+      setState(() {
+        _posX = 1;
+      });
+    } else {
+      setState(() {
+        _posX = possibles[index];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: const [SpriteTile(imageSrc: 'images/character.png')]);
+    return Column(children: [
+      GestureDetector(
+        onTap: () => _onClick(),
+        child: Container(
+          width: 80,
+          height: 80,
+          child: SpriteTile(
+            imageSrc: 'images/character.png',
+            tinyWidth: 24,
+            tinyHeight: 24,
+            posX: _posX * 1.0,
+            posY: _posY,
+          ),
+        ),
+      ),
+    ]);
   }
 }
