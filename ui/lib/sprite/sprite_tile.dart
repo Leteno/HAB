@@ -1,38 +1,55 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class SpriteTile extends StatefulWidget {
-  const SpriteTile({Key? key, required this.imageSrc}) : super(key: key);
+import 'dart:ui' as ui;
 
+class SpriteTile extends StatefulWidget {
   final String imageSrc;
+
+  const SpriteTile({Key? key, required this.imageSrc}) : super(key: key);
 
   @override
   State<SpriteTile> createState() => _SpriteTileState();
 }
 
-class _SpriteTileState extends State<SpriteTile> {
+class _SpritePainter extends CustomPainter {
+  ui.Image? image;
+  _SpritePainter({required this.image});
+
   @override
-  Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: _Clipper(),
-      child: Image.asset(widget.imageSrc),
-    );
+  void paint(Canvas canvas, Size size) {
+    canvas.save();
+    canvas.drawImage(image!, const Offset(0, 0), Paint());
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
 
-class _Clipper extends CustomClipper<Path> {
+class _SpriteTileState extends State<SpriteTile> {
+  ui.Image? _image;
   @override
-  Path getClip(Size size) {
-    print('${size}');
-    final Path path = Path();
-    path.moveTo(size.width / 2, size.height / 2);
-    path.lineTo(size.width, size.height / 2);
-    path.lineTo(size.width, size.height);
-    path.close();
-    return path;
+  void initState() {
+    super.initState();
+    _getAssetImage();
+  }
+
+  void _getAssetImage() async {
+    ByteData data = await rootBundle.load(widget.imageSrc);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+    ui.FrameInfo fi = await codec.getNextFrame();
+    setState(() {
+      _image = fi.image;
+    });
   }
 
   @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false;
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _SpritePainter(image: _image),
+    );
   }
 }
