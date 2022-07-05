@@ -31,16 +31,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late int _posX;
-  late double _posY;
-  late SpriteController _controller;
+  late int _humanPosX;
+  late int _ratsPosX;
+  late SpriteController _humanController;
+  late SpriteController _ratController;
   @override
   void initState() {
     super.initState();
-    _posX = 1;
-    _posY = 0;
-    _controller = SpriteController(
-        tinyWidth: 24, tinyHeight: 24, posX: _posX * 1.0, posY: _posY);
+    _humanPosX = 1;
+    _ratsPosX = 1;
+    _humanController = SpriteController(
+        tinyWidth: 24, tinyHeight: 24, posX: _humanPosX * 1.0, posY: 0);
+    _ratController = SpriteController(
+        tinyWidth: 20, tinyHeight: 20, posX: _ratsPosX * 1.0, posY: 0);
     Future.doWhile(() async {
       await Future.delayed(const Duration(microseconds: 200), () {
         _onClick();
@@ -51,30 +54,53 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onClick() {
     List<int> possibles = [1, 2, 3, 4, 5];
-    int index = possibles.indexOf(_posX);
+    int index = possibles.indexOf(_humanPosX);
     if (++index >= possibles.length) {
-      _posX = 1;
+      _humanPosX = 1;
     } else {
-      _posX = possibles[index];
+      _humanPosX = possibles[index];
     }
-    _controller.posX = _posX * 1.0;
-    _controller.update();
+    _humanController.posX = _humanPosX * 1.0;
+    _humanController.update();
+
+    List<int> ratsPossible = [1, 2, 3, 4, 5, 6, 7];
+    index = possibles.indexOf(_ratsPosX);
+    if (++index >= ratsPossible.length) {
+      _ratsPosX = 1;
+    } else {
+      _ratsPosX = ratsPossible[index];
+    }
+    _ratController.posX = _ratsPosX * 1.0;
+    _ratController.update();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      GestureDetector(
-        onTap: () => _onClick(),
-        child: Container(
-          width: 80,
-          height: 80,
-          child: SpriteTile(
-            imageSrc: 'images/character.png',
-            controller: _controller,
+      Row(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            child: SpriteTile(
+              imageSrc: 'images/rats.png',
+              controller: _ratController,
+            ),
           ),
-        ),
+          GestureDetector(
+            onTap: () => _onClick(),
+            child: Container(
+              width: 80,
+              height: 80,
+              child: SpriteTile(
+                imageSrc: 'images/character.png',
+                controller: _humanController,
+              ),
+            ),
+          ),
+        ],
       ),
+      const Text("小嘉嘉快跑~~"),
     ]);
   }
 }
