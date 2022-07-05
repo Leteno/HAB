@@ -1,86 +1,80 @@
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-
+import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:ui/sprite/sprite_raw_tile.dart';
 
 class SpriteTile extends StatefulWidget {
-  final String imageSrc;
-  double tinyWidth;
-  double tinyHeight;
-  double posX;
-  double posY;
-
-  SpriteTile(
-      {Key? key,
-      required this.imageSrc,
-      required this.tinyWidth,
-      required this.tinyHeight,
-      required this.posX,
-      required this.posY})
+  String imageSrc;
+  SpriteController controller;
+  SpriteTile({Key? key, required this.imageSrc, required this.controller})
       : super(key: key);
 
   @override
   State<SpriteTile> createState() => _SpriteTileState();
 }
 
-class _SpritePainter extends CustomPainter {
-  ui.Image? image;
-  double tinyWidth;
-  double tinyHeight;
-  double posX;
-  double posY;
-
-  _SpritePainter({
-    required this.image,
-    required this.tinyWidth,
-    required this.tinyHeight,
-    required this.posX,
-    required this.posY,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.save();
-    Rect src = Rect.fromLTWH(
-        posX * tinyWidth, posY * tinyHeight, tinyWidth, tinyHeight);
-    Rect dst =
-        Rect.fromPoints(const Offset(0, 0), Offset(size.width, size.height));
-    canvas.drawImageRect(image!, src, dst, Paint());
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
 class _SpriteTileState extends State<SpriteTile> {
-  ui.Image? _image;
+  ui.Image? image;
+
   @override
   void initState() {
     super.initState();
-    _getAssetImage();
+    widget.controller._SetSpriteTileState(this);
+    _updateImage();
   }
 
-  void _getAssetImage() async {
-    ByteData data = await rootBundle.load(widget.imageSrc);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
-    ui.FrameInfo fi = await codec.getNextFrame();
+  void _updateImage() async {
+    ui.Image newImage = await getAssetImage(widget.imageSrc);
     setState(() {
-      _image = fi.image;
+      image = newImage;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _SpritePainter(
-          image: _image,
-          tinyWidth: widget.tinyWidth,
-          tinyHeight: widget.tinyHeight,
-          posX: widget.posX,
-          posY: widget.posY),
-    );
+    if (image != null) {
+      return SpriteRawTile(
+          image: image!,
+          tinyWidth: widget.controller.tinyWidth,
+          tinyHeight: widget.controller.tinyHeight,
+          posX: widget.controller.posX,
+          posY: widget.controller.posY);
+    }
+    return const Text('Image loading');
+  }
+}
+
+Future<ui.Image> getAssetImage(String imageSrc) async {
+  ByteData data = await rootBundle.load(imageSrc);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return fi.image;
+}
+
+class SpriteController {
+  double tinyWidth;
+  double tinyHeight;
+  double posX;
+  double posY;
+  _SpriteTileState? state;
+
+  SpriteController(
+      {required this.tinyWidth,
+      required this.tinyHeight,
+      required this.posX,
+      required this.posY});
+
+  void _SetSpriteTileState(_SpriteTileState state) {
+    this.state = state;
+  }
+
+  update() {
+    if (state != null) {
+      // ignore: invalid_use_of_protected_member
+      state!.setState(() {
+        // It will read the controller.
+      });
+    }
   }
 }

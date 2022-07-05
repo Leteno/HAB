@@ -31,20 +31,34 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _posX = 1;
-  double _posY = 0;
+  late int _posX;
+  late double _posY;
+  late SpriteController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _posX = 1;
+    _posY = 0;
+    _controller = SpriteController(
+        tinyWidth: 24, tinyHeight: 24, posX: _posX * 1.0, posY: _posY);
+    Future.doWhile(() async {
+      await Future.delayed(const Duration(microseconds: 200), () {
+        _onClick();
+      });
+      return true;
+    });
+  }
+
   void _onClick() {
     List<int> possibles = [1, 2, 3, 4, 5];
     int index = possibles.indexOf(_posX);
     if (++index >= possibles.length) {
-      setState(() {
-        _posX = 1;
-      });
+      _posX = 1;
     } else {
-      setState(() {
-        _posX = possibles[index];
-      });
+      _posX = possibles[index];
     }
+    _controller.posX = _posX * 1.0;
+    _controller.update();
   }
 
   @override
@@ -57,10 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 80,
           child: SpriteTile(
             imageSrc: 'images/character.png',
-            tinyWidth: 24,
-            tinyHeight: 24,
-            posX: _posX * 1.0,
-            posY: _posY,
+            controller: _controller,
           ),
         ),
       ),
