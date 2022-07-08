@@ -7,16 +7,16 @@ class SpriteRawTile extends StatelessWidget {
   final ui.Image image;
   double tinyWidth;
   double tinyHeight;
-  double posX;
-  double posY;
+  double spriteX;
+  double spriteY;
 
   SpriteRawTile(
       {Key? key,
       required this.image,
       required this.tinyWidth,
       required this.tinyHeight,
-      required this.posX,
-      required this.posY})
+      required this.spriteX,
+      required this.spriteY})
       : super(key: key);
 
   @override
@@ -26,8 +26,8 @@ class SpriteRawTile extends StatelessWidget {
           image: image,
           tinyWidth: tinyWidth,
           tinyHeight: tinyHeight,
-          posX: posX,
-          posY: posY),
+          spriteX: spriteX,
+          spriteY: spriteY),
     );
   }
 }
@@ -36,22 +36,22 @@ class _SpritePainter extends CustomPainter {
   ui.Image image;
   double tinyWidth;
   double tinyHeight;
-  double posX;
-  double posY;
+  double spriteX;
+  double spriteY;
 
   _SpritePainter({
     required this.image,
     required this.tinyWidth,
     required this.tinyHeight,
-    required this.posX,
-    required this.posY,
+    required this.spriteX,
+    required this.spriteY,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.save();
     Rect src = Rect.fromLTWH(
-        posX * tinyWidth, posY * tinyHeight, tinyWidth, tinyHeight);
+        spriteX * tinyWidth, spriteY * tinyHeight, tinyWidth, tinyHeight);
     Rect dst = Rect.fromLTWH(0, 0, size.width, size.height);
     canvas.drawImageRect(image, src, dst, Paint());
     canvas.restore();

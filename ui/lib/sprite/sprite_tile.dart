@@ -34,12 +34,18 @@ class _SpriteTileState extends State<SpriteTile> {
   @override
   Widget build(BuildContext context) {
     if (image != null) {
-      return SpriteRawTile(
-          image: image!,
-          tinyWidth: widget.controller.tinyWidth,
-          tinyHeight: widget.controller.tinyHeight,
-          posX: widget.controller.posX,
-          posY: widget.controller.posY);
+      return Positioned(
+          left: widget.controller.posX,
+          top: widget.controller.posY,
+          child: Container(
+              width: 80,
+              height: 80,
+              child: SpriteRawTile(
+                  image: image!,
+                  tinyWidth: widget.controller.tinyWidth,
+                  tinyHeight: widget.controller.tinyHeight,
+                  spriteX: widget.controller.spriteX,
+                  spriteY: widget.controller.spriteY)));
     }
     return const Text('Image loading');
   }
@@ -55,15 +61,17 @@ Future<ui.Image> getAssetImage(String imageSrc) async {
 class SpriteController {
   double tinyWidth;
   double tinyHeight;
-  double posX;
-  double posY;
+  double spriteX;
+  double spriteY;
+  double posX = 0;
+  double posY = 0;
   _SpriteTileState? state;
 
   SpriteController(
       {required this.tinyWidth,
       required this.tinyHeight,
-      required this.posX,
-      required this.posY});
+      required this.spriteX,
+      required this.spriteY});
 
   void _SetSpriteTileState(_SpriteTileState state) {
     this.state = state;
