@@ -1,6 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart' hide Animation;
 import 'package:flutter/services.dart';
 import 'package:ui/sprite/sprite_tile.dart';
+
+import 'package:ui/animation/animation.dart' show Animation, IntAnimation;
 
 void main() {
   runApp(const MyApp());
@@ -31,11 +35,14 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   late int _humanPosX;
   late int _ratsPosX;
   late SpriteController _humanController;
   late SpriteController _ratController;
+  late final Timer _timer;
+  List<Animation> animationList = [];
   @override
   void initState() {
     super.initState();
@@ -43,36 +50,35 @@ class _MyHomePageState extends State<MyHomePage> {
     _ratsPosX = 1;
     _humanController = SpriteController(
         tinyWidth: 24, tinyHeight: 24, spriteX: _humanPosX * 1.0, spriteY: 0);
+    _humanController.posX = 100;
+    _humanController.posY = 100;
     _ratController = SpriteController(
         tinyWidth: 20, tinyHeight: 20, spriteX: _ratsPosX * 1.0, spriteY: 0);
-    Future.doWhile(() async {
-      await Future.delayed(const Duration(microseconds: 200), () {
-        _onClick();
-      });
-      return true;
+    _ratController.posX = 0;
+    _ratController.posY = 100;
+
+    var lastTime = DateTime.now();
+    Timer.periodic(const Duration(milliseconds: 33), (Timer timer) {
+      var currentTime = DateTime.now();
+      int elapse = currentTime.difference(lastTime).inMilliseconds;
+      lastTime = currentTime;
+
+      // Animataion
+      List<Animation> nextAnimationList = [];
+      for (var anim in animationList) {
+        anim.elapse(elapse);
+        if (!anim.isStop()) {
+          nextAnimationList.add(anim);
+        }
+      }
+      animationList = nextAnimationList;
     });
   }
 
-  void _onClick() {
-    // List<int> possibles = [1, 2, 3, 4, 5];
-    // int index = possibles.indexOf(_humanPosX);
-    // if (++index >= possibles.length) {
-    //   _humanPosX = 1;
-    // } else {
-    //   _humanPosX = possibles[index];
-    // }
-    // _humanController.posX = _humanPosX * 1.0;
-    // _humanController.update();
-
-    // List<int> ratsPossible = [1, 2, 3, 4, 5, 6, 7];
-    // index = possibles.indexOf(_ratsPosX);
-    // if (++index >= ratsPossible.length) {
-    //   _ratsPosX = 1;
-    // } else {
-    //   _ratsPosX = ratsPossible[index];
-    // }
-    // _ratController.posX = _ratsPosX * 1.0;
-    // _ratController.update();
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   void onKey(KeyEvent event) {
@@ -84,8 +90,13 @@ class _MyHomePageState extends State<MyHomePage> {
       print("press right");
       _humanController.posX += 10;
       _humanController.update();
+      IntAnimation animation = IntAnimation(1000, 1, 5);
+      animation.onValueChange = (value) {
+        _humanController.spriteX = value * 1.0;
+        _humanController.update();
+      };
+      animationList.add(animation);
     }
-    print('${event}');
   }
 
   @override
