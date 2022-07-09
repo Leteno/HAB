@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage>
   late SpriteController _humanController;
   late SpriteController _ratController;
   late final Timer _timer;
-  List<Animation> animationList = [];
+  Map<String, Animation> animationMap = {};
   @override
   void initState() {
     super.initState();
@@ -64,14 +64,19 @@ class _MyHomePageState extends State<MyHomePage>
       lastTime = currentTime;
 
       // Animataion
-      List<Animation> nextAnimationList = [];
-      for (var anim in animationList) {
-        anim.elapse(elapse);
-        if (!anim.isStop()) {
-          nextAnimationList.add(anim);
+      List<String> removeKeys = [];
+      if (animationMap.isNotEmpty) {
+        for (var key in animationMap.keys) {
+          var anim = animationMap[key];
+          anim?.elapse(elapse);
+          if (anim != null && anim.isStop()) {
+            removeKeys.add(key);
+          }
+        }
+        for (var key in removeKeys) {
+          animationMap.remove(key);
         }
       }
-      animationList = nextAnimationList;
     });
   }
 
@@ -84,18 +89,34 @@ class _MyHomePageState extends State<MyHomePage>
   void onKey(KeyEvent event) {
     if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
       print("press left");
-      _ratController.posX += 10;
+      _ratController.posX += 1;
       _ratController.update();
+      IntAnimation animation = IntAnimation(1000, 1, 8);
+      animation.onValueChange = (value) {
+        if (value == 8) {
+          value = 1;
+        }
+        _ratController.spriteX = value * 1.0;
+        _ratController.update();
+      };
+      if (!animationMap.containsKey('rat')) {
+        animationMap['rat'] = animation;
+      }
     } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
       print("press right");
-      _humanController.posX += 10;
+      _humanController.posX += 1;
       _humanController.update();
-      IntAnimation animation = IntAnimation(1000, 1, 5);
+      IntAnimation animation = IntAnimation(1000, 1, 6);
       animation.onValueChange = (value) {
+        if (value == 6) {
+          value = 1;
+        }
         _humanController.spriteX = value * 1.0;
         _humanController.update();
       };
-      animationList.add(animation);
+      if (!animationMap.containsKey('human')) {
+        animationMap['human'] = animation;
+      }
     }
   }
 
