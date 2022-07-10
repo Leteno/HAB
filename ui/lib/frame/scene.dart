@@ -6,17 +6,21 @@ abstract class Scene {
   Map<String, Animation> animationMap = {};
 
   void animate(int elapse) {
-    List<String> removeKeys = [];
+    Map<String, Animation> removes = {};
     if (animationMap.isNotEmpty) {
       for (var key in animationMap.keys) {
         var anim = animationMap[key];
         anim?.elapse(elapse);
-        if (anim == null || anim.isStop()) {
-          removeKeys.add(key);
+        if (anim != null && anim.isStop()) {
+          removes[key] = anim;
         }
       }
-      for (var key in removeKeys) {
-        animationMap.remove(key);
+      if (removes.isNotEmpty) {
+        for (var key in removes.keys) {
+          if (removes[key] == animationMap[key]) {
+            animationMap.remove(key);
+          }
+        }
       }
     }
   }

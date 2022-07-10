@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/frame/scene.dart';
+import 'package:ui/keyboard/game_event.dart';
 
 void main() {
   test('test animation', () {
@@ -30,6 +31,38 @@ void main() {
     expect(scene.animationMap.keys.length, 0);
     expect(scene.animationMap.containsKey('world'), false);
   });
+
+  test('animation onStop', () {
+    SceneForTest scene = SceneForTest();
+    double posY = 0;
+    double origionalY = posY;
+    DoubleAnimation jumpUp = DoubleAnimation(100, 0, 100);
+    jumpUp.onValueChange = (value) {
+      posY = origionalY + value;
+    };
+    jumpUp.onStop = () {
+      DoubleAnimation jumpDown = DoubleAnimation(100, 100, 0);
+      jumpDown.onValueChange = (value) {
+        posY = origionalY + value;
+      };
+      scene.animationMap['jump'] = jumpDown;
+    };
+    scene.animationMap['jump'] = jumpUp;
+
+    expect(posY, 0);
+
+    // Start jumping up
+    scene.animate(50);
+    expect(posY, 50);
+    scene.animate(50);
+    expect(posY, 100);
+
+    // Start falling down
+    scene.animate(12);
+    expect(posY, 88);
+    scene.animate(100);
+    expect(posY, 0);
+  });
 }
 
 class SceneForTest extends Scene {
@@ -39,5 +72,5 @@ class SceneForTest extends Scene {
   }
 
   @override
-  void onKey(KeyEvent event) {}
+  void onKey(GameEventType event) {}
 }
