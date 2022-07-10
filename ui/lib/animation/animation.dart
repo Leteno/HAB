@@ -1,4 +1,5 @@
 typedef OnValueChangeFunction<T> = void Function(T value);
+typedef OnStopFunction = void Function();
 
 abstract class Animation<T extends num> {
   int duration;
@@ -12,6 +13,7 @@ abstract class Animation<T extends num> {
   }
 
   OnValueChangeFunction<T>? onValueChange;
+  OnStopFunction? onStop;
 
   void elapse(int time);
 
@@ -30,6 +32,7 @@ class DoubleAnimation extends Animation<double> {
       left = 0;
       value = end;
       onValueChange?.call(end);
+      onStop?.call();
     }
     value = ((duration - left) * (end - begin) / duration + begin);
     onValueChange?.call(value);
@@ -46,6 +49,7 @@ class IntAnimation extends Animation<int> {
       left = 0;
       value = end;
       onValueChange?.call(end);
+      onStop?.call();
     }
     value = ((duration - left) * (end - begin) / duration + begin).round();
     onValueChange?.call(value);
