@@ -2,13 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:ui' as ui;
 
-class TilePosition {
-  int srcX;
-  int srcY;
-  int dstX;
-  int dstY;
-  TilePosition(this.srcX, this.srcY, this.dstX, this.dstY);
-}
+import 'package:ui/sprite/tile_position.dart';
 
 class BulkSpriteRawTile extends StatelessWidget {
   final ui.Image image;

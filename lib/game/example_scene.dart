@@ -6,6 +6,7 @@ import 'package:ui/keyboard/game_event.dart';
 import 'package:ui/sprite/bulk_sprite_raw_tile.dart';
 import 'package:ui/sprite/bulk_sprite_tile.dart';
 import 'package:ui/sprite/sprite_tile.dart';
+import 'package:ui/sprite/tile_position.dart';
 
 import 'simple_map.dart' as SimpleMap;
 
@@ -27,26 +28,8 @@ class ExampleScene extends Scene {
     _MapController = BulkSpriteController(16, 16, 24, 24);
     _MapController.posX = 180;
     _MapController.posY = 180;
-    _MapController.tiles =
-        initMap(SimpleMap.positions.toList(), 16, 16, 384, 544, 8, 8);
-  }
-
-  List<TilePosition> initMap(List<int> positions, int tileWidth, int tileHeight,
-      int imageWidth, int imageHeight, int tileSizeX, int tileSizeY) {
-    List<TilePosition> result = [];
-    int tilePerRow = (imageWidth / tileWidth).floor();
-
-    for (int y = 0; y < tileSizeY; y++) {
-      for (int x = 0; x < tileSizeX; x++) {
-        int posInfo = positions[y * tileSizeX + x];
-        if (posInfo > 0) {
-          int srcX = posInfo % tilePerRow;
-          int srcY = (posInfo / tilePerRow).floor();
-          result.add(TilePosition(srcX, srcY, x, y));
-        }
-      }
-    }
-    return result;
+    _MapController.tiles = TilePosition.initMap(
+        SimpleMap.positions.toList(), 16, 16, 384, 544, 8, 8);
   }
 
   @override
