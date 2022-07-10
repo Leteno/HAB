@@ -52,6 +52,22 @@ class ExampleScene extends Scene {
       if (!animationMap.containsKey('human')) {
         animationMap['human'] = animation;
       }
+    } else if (event == GameEventType.JUMP) {
+      DoubleAnimation animation = DoubleAnimation(2000, 0, 100);
+      double originalPoxY = _humanController.posY;
+      animation.onValueChange = (value) {
+        _humanController.posY = originalPoxY - value;
+        _humanController.update();
+      };
+      animation.onStop = () {
+        DoubleAnimation animation = DoubleAnimation(2000, 100, 0);
+        animation.onValueChange = ((value) {
+          _humanController.posY = originalPoxY - value;
+          _humanController.update();
+        });
+        animationMap['human'] = animation;
+      };
+      animationMap['human'] = animation;
     }
   }
 
