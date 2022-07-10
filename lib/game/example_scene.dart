@@ -3,11 +3,16 @@ import 'package:flutter/widgets.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/frame/scene.dart';
 import 'package:ui/keyboard/game_event.dart';
+import 'package:ui/sprite/bulk_sprite_raw_tile.dart';
+import 'package:ui/sprite/bulk_sprite_tile.dart';
 import 'package:ui/sprite/sprite_tile.dart';
+
+import 'simple_map.dart' as SimpleMap;
 
 class ExampleScene extends Scene {
   late SpriteController _humanController;
   late SpriteController _ratController;
+  late BulkSpriteController _MapController;
 
   ExampleScene() {
     _humanController = SpriteController(
@@ -18,6 +23,30 @@ class ExampleScene extends Scene {
         tinyWidth: 20, tinyHeight: 20, spriteX: 1.0, spriteY: 0);
     _ratController.posX = 0;
     _ratController.posY = 100;
+
+    _MapController = BulkSpriteController(16, 16, 24, 24);
+    _MapController.posX = 180;
+    _MapController.posY = 180;
+    _MapController.tiles =
+        initMap(SimpleMap.positions.toList(), 16, 16, 384, 544, 8, 8);
+  }
+
+  List<TilePosition> initMap(List<int> positions, int tileWidth, int tileHeight,
+      int imageWidth, int imageHeight, int tileSizeX, int tileSizeY) {
+    List<TilePosition> result = [];
+    int tilePerRow = (imageWidth / tileWidth).floor();
+
+    for (int y = 0; y < tileSizeY; y++) {
+      for (int x = 0; x < tileSizeX; x++) {
+        int posInfo = positions[y * tileSizeX + x];
+        if (posInfo > 0) {
+          int srcX = posInfo % tilePerRow;
+          int srcY = (posInfo / tilePerRow).floor();
+          result.add(TilePosition(srcX, srcY, x, y));
+        }
+      }
+    }
+    return result;
   }
 
   @override
@@ -83,6 +112,7 @@ class ExampleScene extends Scene {
           imageSrc: 'images/character.png',
           controller: _humanController,
         ),
+        BulkSpriteTile('images/background_tile.png', _MapController),
         const Text("小嘉嘉快跑~~"),
       ],
     );
