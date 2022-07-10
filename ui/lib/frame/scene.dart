@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart' hide Animation;
 import 'package:ui/animation/animation.dart' show Animation;
+import 'package:ui/keyboard/game_event.dart';
 
 abstract class Scene {
   Map<String, Animation> animationMap = {};
@@ -20,7 +21,7 @@ abstract class Scene {
     }
   }
 
-  void onKey(KeyEvent event);
+  void onKey(GameEventType event);
 
   Widget build(BuildContext context);
 }

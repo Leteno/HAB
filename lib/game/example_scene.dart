@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/frame/scene.dart';
+import 'package:ui/keyboard/game_event.dart';
 import 'package:ui/sprite/sprite_tile.dart';
 
 class ExampleScene extends Scene {
@@ -20,8 +21,8 @@ class ExampleScene extends Scene {
   }
 
   @override
-  void onKey(KeyEvent event) {
-    if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+  void onKey(GameEventType event) {
+    if (event == GameEventType.LEFT) {
       print("press left");
       _ratController.posX += 1;
       _ratController.update();
@@ -36,7 +37,7 @@ class ExampleScene extends Scene {
       if (!animationMap.containsKey('rat')) {
         animationMap['rat'] = animation;
       }
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+    } else if (event == GameEventType.RIGHT) {
       print("press right");
       _humanController.posX += 1;
       _humanController.update();

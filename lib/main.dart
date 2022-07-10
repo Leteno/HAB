@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart' hide Animation;
 import 'package:hab_repo/game/example_scene.dart';
 import 'package:ui/frame/scene.dart';
+import 'package:ui/keyboard/game_event.dart';
 
 void main() {
   runApp(const MyApp());
@@ -60,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   void onKey(KeyEvent event) {
-    _currentScene.onKey(event);
+    _currentScene.onKey(GameEvent.translate(event));
   }
 
   @override
