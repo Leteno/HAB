@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ui/sprite/sprite_raw_tile.dart';
+import 'package:ui/sprite/tile_position.dart';
 
 import 'bulk_sprite_raw_tile.dart';
 
