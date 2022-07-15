@@ -8,18 +8,18 @@ import 'package:ui/sprite/bulk_sprite_tile.dart';
 import 'package:ui/sprite/sprite_tile.dart';
 import 'package:ui/sprite/tile_position.dart';
 
+import 'warrior.dart';
 import 'simple_map.dart' as SimpleMap;
 
 class ExampleScene extends Scene {
-  late SpriteController _humanController;
   late SpriteController _ratController;
   late BulkSpriteController _MapController;
 
+  late Warrior warrior;
+
   ExampleScene() {
-    _humanController = SpriteController(
-        tinyWidth: 24, tinyHeight: 24, spriteX: 1.0, spriteY: 0);
-    _humanController.posX = 100;
-    _humanController.posY = 100;
+    warrior = Warrior(100, 100, 24, 24);
+    addSprite(warrior);
     _ratController = SpriteController(
         tinyWidth: 20, tinyHeight: 20, spriteX: 1.0, spriteY: 0);
     _ratController.posX = 0;
@@ -50,36 +50,9 @@ class ExampleScene extends Scene {
         animationMap['rat'] = animation;
       }
     } else if (event == GameEventType.RIGHT) {
-      print("press right");
-      _humanController.posX += 1;
-      _humanController.update();
-      IntAnimation animation = IntAnimation(1000, 1, 6);
-      animation.onValueChange = (value) {
-        if (value == 6) {
-          value = 1;
-        }
-        _humanController.spriteX = value * 1.0;
-        _humanController.update();
-      };
-      if (!animationMap.containsKey('human')) {
-        animationMap['human'] = animation;
-      }
+      warrior.moveRight();
     } else if (event == GameEventType.JUMP) {
-      DoubleAnimation animation = DoubleAnimation(2000, 0, 100);
-      double originalPoxY = _humanController.posY;
-      animation.onValueChange = (value) {
-        _humanController.posY = originalPoxY - value;
-        _humanController.update();
-      };
-      animation.onStop = () {
-        DoubleAnimation animation = DoubleAnimation(2000, 100, 0);
-        animation.onValueChange = ((value) {
-          _humanController.posY = originalPoxY - value;
-          _humanController.update();
-        });
-        animationMap['human'] = animation;
-      };
-      animationMap['human'] = animation;
+      warrior.jump();
     }
   }
 
@@ -91,10 +64,7 @@ class ExampleScene extends Scene {
           imageSrc: 'images/rats.png',
           controller: _ratController,
         ),
-        SpriteTile(
-          imageSrc: 'images/character.png',
-          controller: _humanController,
-        ),
+        warrior.build(),
         BulkSpriteTile('images/background_tile.png', _MapController),
         const Text("小嘉嘉快跑~~"),
       ],

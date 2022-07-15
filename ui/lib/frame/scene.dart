@@ -2,8 +2,15 @@ import 'package:flutter/widgets.dart' hide Animation;
 import 'package:ui/animation/animation.dart' show Animation;
 import 'package:ui/keyboard/game_event.dart';
 
+import '../sprite/sprite.dart';
+
 abstract class Scene {
+  List<Sprite> _spriteList = [];
   Map<String, Animation> animationMap = {};
+
+  void addSprite(Sprite sprite) {
+    _spriteList.add(sprite);
+  }
 
   void animate(int elapse) {
     Map<String, Animation> removes = {};
@@ -23,9 +30,13 @@ abstract class Scene {
         }
       }
     }
+    for (var sprite in _spriteList) {
+      sprite.animate(elapse);
+    }
   }
 
   void onKey(GameEventType event);
 
+  // TODO: return Stack with _spriteList.
   Widget build(BuildContext context);
 }
