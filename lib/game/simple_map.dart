@@ -1,4 +1,28 @@
-List<int> positions = [
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:ui/sprite/bulk_sprite_tile.dart';
+import 'package:ui/sprite/sprite.dart';
+import 'package:ui/sprite/tile_position.dart';
+
+class SimpleMap extends Sprite {
+  late BulkSpriteController _MapController;
+  final double pieceSizeX;
+  final double pieceSizeY;
+  SimpleMap(super.posX, super.posY, super.width, super.height, this.pieceSizeX,
+      this.pieceSizeY) {
+    _MapController = BulkSpriteController(16, 16, pieceSizeX, pieceSizeY);
+    _MapController.posX = posX;
+    _MapController.posY = posY;
+    _MapController.tiles =
+        TilePosition.initMap(_positions.toList(), 16, 16, 384, 544, 8, 8);
+  }
+
+  @override
+  Widget build() {
+    return BulkSpriteTile('images/background_tile.png', _MapController);
+  }
+}
+
+List<int> _positions = [
   468,
   468,
   349,
