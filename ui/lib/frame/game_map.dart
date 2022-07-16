@@ -1,10 +1,15 @@
+import 'package:ui/frame/collision_world.dart';
 import 'package:ui/physic/math.dart';
+import 'package:ui/sprite/sprite.dart';
 
 class GameMap {
   List<int> mapData;
   int rowCount;
   int columnCount;
-  GameMap(this.mapData, this.columnCount, this.rowCount);
+  double gridSizeX;
+  double gridSizeY;
+  GameMap(this.mapData, this.columnCount, this.rowCount, this.gridSizeX,
+      this.gridSizeY);
 
   bool isOccupy(int x, int y) {
     assert(Math.between(0, columnCount - 1, x));
