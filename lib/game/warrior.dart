@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hab_repo/data/warrior_tile_data.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
+import 'package:ui/data/game_tile_data.dart';
 import 'package:ui/frame/collision_world.dart';
 import 'package:ui/sprite/sprite.dart';
 import 'package:ui/sprite/sprite_tile.dart';
@@ -29,14 +30,11 @@ class Warrior extends Sprite {
       widgetData.update();
     }
 
-    IntAnimation animation = IntAnimation(1000, 1, 6);
-    animation.onValueChange = (value) {
-      if (value == 6) {
-        value = 1;
-      }
-      widgetData.tileData.imageSpriteIndexX = value;
+    AnimationData data =
+        widgetData.tileData.getAnimationData(SpriteState.WALKING);
+    IntAnimation animation = data.buildAnimation(1000, widgetData.tileData, () {
       widgetData.update();
-    };
+    });
     if (!animationMap.containsKey('human')) {
       animationMap['human'] = animation;
     }
@@ -50,23 +48,26 @@ class Warrior extends Sprite {
       widgetData.update();
     }
 
-    IntAnimation animation = IntAnimation(1000, 1, 6);
-    animation.onValueChange = (value) {
-      if (value == 6) {
-        value = 1;
-      }
-      widgetData.tileData.imageSpriteIndexX = value;
+    AnimationData data =
+        widgetData.tileData.getAnimationData(SpriteState.WALKING);
+    IntAnimation animation = data.buildAnimation(1000, widgetData.tileData, () {
       widgetData.update();
-    };
+    });
     if (!animationMap.containsKey('human')) {
       animationMap['human'] = animation;
     }
   }
 
   void jump() {
-    DoubleAnimation animation = DoubleAnimation(2000, 0, 100);
+    AnimationData data = widgetData.tileData.getAnimationData(SpriteState.JUMP);
+    IntAnimation jumpAnimation =
+        data.buildAnimation(2000, widgetData.tileData, () {
+      widgetData.update();
+    });
+
+    DoubleAnimation movingAnimation = DoubleAnimation(2000, 0, 100);
     double originalPoxY = widgetData.posY;
-    animation.onValueChange = (value) {
+    movingAnimation.onValueChange = (value) {
       double previous = widgetData.posY;
       widgetData.posY = originalPoxY - value;
       if (collisionWorld.testCollision(this)) {
@@ -75,7 +76,7 @@ class Warrior extends Sprite {
         widgetData.update();
       }
     };
-    animation.onStop = () {
+    movingAnimation.onStop = () {
       DoubleAnimation animation = DoubleAnimation(2000, 100, 0);
       animation.onValueChange = ((value) {
         double previous = widgetData.posY;
@@ -88,7 +89,8 @@ class Warrior extends Sprite {
       });
       animationMap['human'] = animation;
     };
-    animationMap['human'] = animation;
+    animationMap['human'] = movingAnimation;
+    animationMap['jump'] = jumpAnimation;
   }
 
   @override
