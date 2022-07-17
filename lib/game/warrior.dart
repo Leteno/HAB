@@ -5,11 +5,15 @@ import 'package:hab_repo/data/warrior_tile_data.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
 import 'package:ui/data/game_tile_data.dart';
+import 'package:ui/frame/collision_world.dart';
+import 'package:ui/frame/game_map.dart';
 import 'package:ui/sprite/sprite.dart';
 import 'package:ui/sprite/sprite_tile.dart';
 
 class Warrior extends Sprite {
-  Warrior(posX, posY, widgetWidth, widgetHeight)
+  GameMap map;
+  CollisionWorld collisionWorld;
+  Warrior(this.map, this.collisionWorld, posX, posY, widgetWidth, widgetHeight)
       : super(GameSpriteWidgetData(WarriorTileData(), posX * 1.0, posY * 1.0,
             widgetWidth * 1.0, widgetHeight * 1.0));
 
@@ -22,7 +26,11 @@ class Warrior extends Sprite {
 
   void moveRight() {
     widgetData.posX += 1;
-    widgetData.update();
+    if (collisionWorld.testCollision(map, 0, 0, this)) {
+      widgetData.posX -= 1;
+    } else {
+      widgetData.update();
+    }
 
     IntAnimation animation = IntAnimation(1000, 1, 6);
     animation.onValueChange = (value) {
@@ -41,14 +49,24 @@ class Warrior extends Sprite {
     DoubleAnimation animation = DoubleAnimation(2000, 0, 100);
     double originalPoxY = widgetData.posY;
     animation.onValueChange = (value) {
+      double previous = widgetData.posY;
       widgetData.posY = originalPoxY - value;
-      widgetData.update();
+      if (collisionWorld.testCollision(map, 0, 0, this)) {
+        widgetData.posY = previous;
+      } else {
+        widgetData.update();
+      }
     };
     animation.onStop = () {
       DoubleAnimation animation = DoubleAnimation(2000, 100, 0);
       animation.onValueChange = ((value) {
+        double previous = widgetData.posY;
         widgetData.posY = originalPoxY - value;
-        widgetData.update();
+        if (collisionWorld.testCollision(map, 0, 0, this)) {
+          widgetData.posY = previous;
+        } else {
+          widgetData.update();
+        }
       });
       animationMap['human'] = animation;
     };

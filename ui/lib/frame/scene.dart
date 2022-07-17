@@ -36,9 +36,6 @@ abstract class Scene {
     }
     for (var sprite in _spriteList) {
       sprite.animate(elapse);
-      if (collisionWorld.testCollision(getGameMap(), 0, 0, sprite)) {
-        print("sprite meet collision: ${sprite.toString()}");
-      }
     }
   }
 

@@ -11,21 +11,18 @@ class ExampleScene extends Scene {
   late SimpleMap mapSprite;
   late GameMap _map;
   late Warrior warrior;
-  late Monster mouse;
 
   ExampleScene() {
     mapSprite = SimpleMap(0, 0, 0, 0, 32, 32);
     _map = mapSprite.gameMap();
-    warrior = Warrior(20, 120, 80, 80);
-    mouse = Monster(80, 120, 80, 80);
+    warrior = Warrior(_map, collisionWorld, 20, 120, 80, 80);
     addSprite(warrior);
-    addSprite(mouse);
   }
 
   @override
   void onKey(GameEventType event) {
     if (event == GameEventType.LEFT) {
-      mouse.moveRight();
+      warrior.moveRight();
     } else if (event == GameEventType.RIGHT) {
       warrior.moveRight();
     } else if (event == GameEventType.JUMP) {
@@ -38,7 +35,6 @@ class ExampleScene extends Scene {
     return Stack(
       children: [
         mapSprite.build(),
-        mouse.build(),
         warrior.build(),
       ],
     );
