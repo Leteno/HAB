@@ -41,8 +41,7 @@ void main() {
 
 class TestSprite extends Sprite {
   TestSprite(posX, posY, widgetWidth, widgetHeight)
-      : super(posX * 1.0, posY * 1.0, widgetWidth * 1.0, widgetHeight * 1.0,
-            widgetWidth * 1.0, widgetHeight * 1.0);
+      : super(posX * 1.0, posY * 1.0, widgetWidth * 1.0, widgetHeight * 1.0);
   @override
   Widget build() {
     // TODO: implement build

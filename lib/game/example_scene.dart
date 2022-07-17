@@ -14,10 +14,10 @@ class ExampleScene extends Scene {
   late Monster mouse;
 
   ExampleScene() {
-    mapSprite = SimpleMap(0, 0, 0, 0, 0, 0, 32, 32);
+    mapSprite = SimpleMap(0, 0, 0, 0, 32, 32);
     _map = mapSprite.gameMap();
-    warrior = Warrior(20, 120, 80, 80, 24, 24);
-    mouse = Monster(80, 120, 80, 80, 20, 20);
+    warrior = Warrior(20, 120, 80, 80);
+    mouse = Monster(80, 120, 80, 80);
     addSprite(warrior);
     addSprite(mouse);
   }

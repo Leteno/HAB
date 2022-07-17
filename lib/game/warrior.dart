@@ -10,8 +10,7 @@ import 'package:ui/sprite/sprite_tile.dart';
 
 class Warrior extends Sprite {
   late GameSpriteWidgetData widgetData;
-  Warrior(super.posX, super.posY, super.widgetWidth, super.widgetHeight,
-      super.spriteWidth, super.spriteHeight) {
+  Warrior(super.posX, super.posY, super.widgetWidth, super.widgetHeight) {
     widgetData = GameSpriteWidgetData(
         WarriorTileData(), posX, posY, widgetWidth, widgetHeight);
   }
@@ -19,7 +18,6 @@ class Warrior extends Sprite {
   @override
   Widget build() {
     return SpriteTile(
-      imageSrc: widgetData.tileData.imagePath,
       widgetData: widgetData,
     );
   }

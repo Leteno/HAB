@@ -8,8 +8,7 @@ import 'package:ui/sprite/sprite_tile.dart';
 
 class Monster extends Sprite {
   late GameSpriteWidgetData widgetData;
-  Monster(super.posX, super.posY, super.widgetWidth, super.widgetHeight,
-      super.spriteWidth, super.spriteHeight) {
+  Monster(super.posX, super.posY, super.widgetWidth, super.widgetHeight) {
     widgetData = GameSpriteWidgetData(
         MouseTileData(), posX, posY, widgetWidth, widgetHeight);
   }
@@ -33,8 +32,6 @@ class Monster extends Sprite {
   @override
   Widget build() {
     return SpriteTile(
-      // TODO refactor
-      imageSrc: widgetData.tileData.imagePath,
       widgetData: widgetData,
     );
   }

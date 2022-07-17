@@ -12,7 +12,7 @@ class SimpleMap extends Sprite {
   final double gridSizeY;
   late final GameMap _gameMap;
   SimpleMap(super.posX, super.posY, super.widgetWidth, super.widgetHeight,
-      super.spriteWidth, super.spriteHeight, this.gridSizeX, this.gridSizeY) {
+      this.gridSizeX, this.gridSizeY) {
     _MapController = BulkSpriteController(16, 16, gridSizeX, gridSizeY);
     _MapController.posX = posX;
     _MapController.posY = posY;

@@ -6,10 +6,8 @@ import 'package:ui/sprite/sprite_raw_tile.dart';
 import 'package:ui/sprite/sprite_raw_tile.dart';
 
 class SpriteTile extends StatefulWidget {
-  String imageSrc;
   GameSpriteWidgetData widgetData;
-  SpriteTile({Key? key, required this.imageSrc, required this.widgetData})
-      : super(key: key);
+  SpriteTile({Key? key, required this.widgetData}) : super(key: key);
 
   @override
   State<SpriteTile> createState() => _SpriteTileState();
@@ -26,7 +24,8 @@ class _SpriteTileState extends State<SpriteTile> {
   }
 
   void _updateImage() async {
-    ui.Image newImage = await getAssetImage(widget.imageSrc);
+    ui.Image newImage =
+        await getAssetImage(widget.widgetData.tileData.imagePath);
     setState(() {
       image = newImage;
     });
