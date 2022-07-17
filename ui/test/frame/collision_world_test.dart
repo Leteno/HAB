@@ -39,6 +39,27 @@ void main() {
     expect(world.testCollision(map, 0, 0, TestSprite(1, 1, 10, 10)), true);
     expect(world.testCollision(map, 0, 0, TestSprite(1, 1, 8, 8)), false);
   });
+
+  test('Collision Detection', () {
+    GameMap map = GameMap([0, 0, 0, 1], 2, 2, 10, 10);
+    CollisionWorld world = CollisionWorld();
+
+    CollisionResult result =
+        world.detectCollision(map, 0, 0, TestSprite(0, 0, 9, 9), Offset.zero);
+    expect(result.isCollision, false);
+
+    result = world.detectCollision(
+        map, 0, 0, TestSprite(10, 0, 8, 8), const Offset(0, 10));
+    expect(result.isCollision, true);
+    expect(result.correction.dx, 0);
+    expect(result.correction.dy, -8);
+
+    result = world.detectCollision(
+        map, 0, 0, TestSprite(0, 0, 8, 8), const Offset(15, 16));
+    expect(result.isCollision, true);
+    expect(result.correction.dx, -13);
+    expect(result.correction.dy, -14);
+  });
 }
 
 class TestSprite extends Sprite {
