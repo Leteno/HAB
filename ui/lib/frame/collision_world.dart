@@ -13,9 +13,9 @@ class CollisionWorld {
     double bottom = top + area.height;
 
     int startXIndex = (left / map.gridSizeX).floor();
-    int endXIndex = (right / map.gridSizeX).ceil();
+    int endXIndex = (right / map.gridSizeX).floor();
     int startYIndex = (top / map.gridSizeY).floor();
-    int endYIndex = (bottom / map.gridSizeY).ceil();
+    int endYIndex = (bottom / map.gridSizeY).floor();
 
     for (int y = startYIndex; y < endYIndex; y++) {
       if (y < 0 || y >= map.rowCount) {
