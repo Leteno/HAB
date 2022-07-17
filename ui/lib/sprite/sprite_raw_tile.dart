@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ui/data/game_tile_data.dart';
 
 import 'dart:ui' as ui;
 
@@ -8,53 +9,41 @@ import 'package:ui/ui.dart';
 
 class SpriteRawTile extends StatelessWidget {
   final ui.Image image;
-  double tinyWidth;
-  double tinyHeight;
-  double spriteX;
-  double spriteY;
+  GameTileData tileData;
 
-  SpriteRawTile(
-      {Key? key,
-      required this.image,
-      required this.tinyWidth,
-      required this.tinyHeight,
-      required this.spriteX,
-      required this.spriteY})
+  SpriteRawTile({Key? key, required this.image, required this.tileData})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: _SpritePainter(
-          image: image,
-          tinyWidth: tinyWidth,
-          tinyHeight: tinyHeight,
-          spriteX: spriteX,
-          spriteY: spriteY),
+        image: image,
+        tileData: tileData,
+      ),
     );
   }
 }
 
 class _SpritePainter extends CustomPainter {
   ui.Image image;
-  double tinyWidth;
-  double tinyHeight;
-  double spriteX;
-  double spriteY;
+  GameTileData tileData;
 
   _SpritePainter({
     required this.image,
-    required this.tinyWidth,
-    required this.tinyHeight,
-    required this.spriteX,
-    required this.spriteY,
+    required this.tileData,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.save();
     Rect src = Rect.fromLTWH(
-        spriteX * tinyWidth, spriteY * tinyHeight, tinyWidth, tinyHeight);
+        tileData.imageSpriteStartPoxX +
+            tileData.imageSpriteIndexX * tileData.tileWidth,
+        tileData.imageSpriteStartPoxY +
+            tileData.imageSpriteIndexY * tileData.tileHeight,
+        tileData.tileWidth,
+        tileData.tileHeight);
     Rect dst = Rect.fromLTWH(0, 0, size.width, size.height);
     if (isDebug) {
       // Draw area
@@ -62,7 +51,15 @@ class _SpritePainter extends CustomPainter {
       // Collision area
       canvas.drawRect(
           Rect.fromLTWH(
-              size.width / 4, size.height / 4, size.width / 2, size.height / 2),
+            size.width *
+                (1.0 - tileData.tileActualWidth / tileData.tileWidth) /
+                2,
+            size.height *
+                (1.0 - tileData.tileActualHeight / tileData.tileHeight) /
+                2,
+            size.width * tileData.tileActualWidth / tileData.tileWidth,
+            size.height * tileData.tileActualHeight / tileData.tileHeight,
+          ),
           Paint()..color = Colors.black54);
     }
     canvas.drawImageRect(image, src, dst, Paint());

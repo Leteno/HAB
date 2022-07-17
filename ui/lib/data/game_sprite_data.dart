@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ui/data/game_tile_data.dart';
-import 'package:ui/sprite/sprite_tile_planb.dart';
+import 'package:ui/sprite/sprite_tile.dart';
 
 class GameSpriteWidgetData {
   double posX;

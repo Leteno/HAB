@@ -6,7 +6,7 @@ import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
 import 'package:ui/data/game_tile_data.dart';
 import 'package:ui/sprite/sprite.dart';
-import 'package:ui/sprite/sprite_tile_planb.dart';
+import 'package:ui/sprite/sprite_tile.dart';
 
 class Warrior extends Sprite {
   late GameSpriteWidgetData widgetData;
@@ -18,8 +18,8 @@ class Warrior extends Sprite {
 
   @override
   Widget build() {
-    return SpriteTileB(
-      imageSrc: 'images/character.png',
+    return SpriteTile(
+      imageSrc: widgetData.tileData.imagePath,
       widgetData: widgetData,
     );
   }
