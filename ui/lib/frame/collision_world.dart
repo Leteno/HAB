@@ -3,15 +3,10 @@ import 'package:ui/frame/game_map.dart';
 import 'package:ui/sprite/sprite.dart';
 
 class CollisionWorld {
-  GameMap map;
-  double offsetLeft;
-  double offsetTop;
-
-  CollisionWorld(this.map, this.offsetLeft, this.offsetTop);
-
   // this will correct collision
-  bool testCollision(Sprite sprite) {
-    Rect area = sprite.getRect();
+  bool testCollision(
+      GameMap map, double offsetLeft, double offsetTop, Sprite sprite) {
+    Rect area = sprite.getCollisionArea();
     double left = area.left - offsetLeft;
     double top = -offsetTop + area.top;
     double right = left + area.width;

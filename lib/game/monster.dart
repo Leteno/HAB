@@ -5,9 +5,10 @@ import 'package:ui/sprite/sprite_tile.dart';
 
 class Monster extends Sprite {
   late SpriteController _ratController;
-  Monster(super.posX, super.posY, super.width, super.height) {
+  Monster(super.posX, super.posY, super.widgetWidth, super.widgetHeight,
+      super.spriteWidth, super.spriteHeight) {
     _ratController = SpriteController(
-        tinyWidth: 20, tinyHeight: 20, spriteX: 1.0, spriteY: 0);
+        widgetWidth, widgetHeight, spriteWidth, spriteHeight, 1.0, 0);
     _ratController.posX = posX;
     _ratController.posY = posY;
   }
@@ -34,5 +35,11 @@ class Monster extends Sprite {
       imageSrc: 'images/rats.png',
       controller: _ratController,
     );
+  }
+
+  @override
+  Rect getCollisionArea() {
+    return Rect.fromLTWH(posX + widgetWidth / 4, posY + widgetHeight / 4,
+        widgetWidth / 2, widgetHeight / 2);
   }
 }

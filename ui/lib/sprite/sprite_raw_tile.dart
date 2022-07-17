@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'dart:ui' as ui;
+
+import 'package:ui/ui.dart';
 
 class SpriteRawTile extends StatelessWidget {
   final ui.Image image;
@@ -53,6 +56,15 @@ class _SpritePainter extends CustomPainter {
     Rect src = Rect.fromLTWH(
         spriteX * tinyWidth, spriteY * tinyHeight, tinyWidth, tinyHeight);
     Rect dst = Rect.fromLTWH(0, 0, size.width, size.height);
+    if (isDebug) {
+      // Draw area
+      canvas.drawRect(dst, Paint()..color = Colors.white70);
+      // Collision area
+      canvas.drawRect(
+          Rect.fromLTWH(
+              size.width / 4, size.height / 4, size.width / 2, size.height / 2),
+          Paint()..color = Colors.black54);
+    }
     canvas.drawImageRect(image, src, dst, Paint());
     canvas.restore();
   }

@@ -37,8 +37,8 @@ class _SpriteTileState extends State<SpriteTile> {
           left: widget.controller.posX,
           top: widget.controller.posY,
           child: Container(
-              width: 80,
-              height: 80,
+              width: widget.controller.widgetWidth,
+              height: widget.controller.widgetHeight,
               child: SpriteRawTile(
                   image: image!,
                   tinyWidth: widget.controller.tinyWidth,
@@ -58,6 +58,8 @@ Future<ui.Image> getAssetImage(String imageSrc) async {
 }
 
 class SpriteController {
+  double widgetWidth;
+  double widgetHeight;
   double tinyWidth;
   double tinyHeight;
   double spriteX;
@@ -66,11 +68,8 @@ class SpriteController {
   double posY = 0;
   _SpriteTileState? state;
 
-  SpriteController(
-      {required this.tinyWidth,
-      required this.tinyHeight,
-      required this.spriteX,
-      required this.spriteY});
+  SpriteController(this.widgetWidth, this.widgetHeight, this.tinyWidth,
+      this.tinyHeight, this.spriteX, this.spriteY);
 
   void _SetSpriteTileState(_SpriteTileState state) {
     this.state = state;

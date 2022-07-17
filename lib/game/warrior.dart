@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/sprite/sprite.dart';
@@ -5,9 +7,10 @@ import 'package:ui/sprite/sprite_tile.dart';
 
 class Warrior extends Sprite {
   late SpriteController _humanController;
-  Warrior(super.posX, super.posY, super.width, super.height) {
+  Warrior(super.posX, super.posY, super.widgetWidth, super.widgetHeight,
+      super.spriteWidth, super.spriteHeight) {
     _humanController = SpriteController(
-        tinyWidth: width, tinyHeight: height, spriteX: 1.0, spriteY: 0);
+        widgetWidth, widgetHeight, spriteWidth, spriteHeight, 1.0, 0);
     _humanController.posX = posX;
     _humanController.posY = posY;
   }
@@ -53,5 +56,11 @@ class Warrior extends Sprite {
       animationMap['human'] = animation;
     };
     animationMap['human'] = animation;
+  }
+
+  @override
+  Rect getCollisionArea() {
+    return Rect.fromLTWH(posX + widgetWidth / 4, posY + widgetHeight / 4,
+        widgetWidth / 2, widgetHeight / 2);
   }
 }

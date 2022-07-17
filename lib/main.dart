@@ -70,6 +70,8 @@ class _MyHomePageState extends State<MyHomePage>
     return KeyboardListener(
         focusNode: node,
         onKeyEvent: onKey,
-        child: _currentScene.build(context));
+        child: Stack(children: [
+          _currentScene.build(context),
+        ]));
   }
 }

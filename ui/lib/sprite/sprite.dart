@@ -4,17 +4,25 @@ import 'package:ui/animation/animation.dart' show Animation;
 abstract class Sprite {
   double posX;
   double posY;
-  double width;
-  double height;
+  // Size when draw sprite, include white space region.
+  double widgetWidth;
+  double widgetHeight;
+  double spriteWidth;
+  double spriteHeight;
   Map<String, Animation> animationMap = {};
-  Sprite(this.posX, this.posY, this.width, this.height);
+  Sprite(
+    this.posX,
+    this.posY,
+    this.widgetWidth,
+    this.widgetHeight,
+    this.spriteWidth,
+    this.spriteHeight,
+  );
 
   Widget build();
   // updateLogic will call first, then it is updateUIIfNeeded
 
-  Rect getRect() {
-    return Rect.fromLTWH(posX, posY, width, height);
-  }
+  Rect getCollisionArea();
 
   void animate(int elapse) {
     Map<String, Animation> removes = {};
