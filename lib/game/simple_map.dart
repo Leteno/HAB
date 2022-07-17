@@ -6,16 +6,16 @@ import 'package:ui/sprite/bulk_sprite_tile.dart';
 import 'package:ui/sprite/sprite.dart';
 import 'package:ui/sprite/tile_position.dart';
 
-class SimpleMap extends Sprite {
+class SimpleMap {
   late BulkSpriteController _MapController;
   final double gridSizeX;
   final double gridSizeY;
   late final GameMap _gameMap;
-  SimpleMap(super.posX, super.posY, super.widgetWidth, super.widgetHeight,
-      this.gridSizeX, this.gridSizeY) {
+  SimpleMap(
+      posX, posY, widgetWidth, widgetHeight, this.gridSizeX, this.gridSizeY) {
     _MapController = BulkSpriteController(16, 16, gridSizeX, gridSizeY);
-    _MapController.posX = posX;
-    _MapController.posY = posY;
+    _MapController.posX = posX * 1.0;
+    _MapController.posY = posY * 1.0;
     _MapController.tiles =
         TilePosition.initMap(_positions.toList(), 16, 16, 384, 544, 8, 8);
 
@@ -33,7 +33,8 @@ class SimpleMap extends Sprite {
 
   @override
   Rect getCollisionArea() {
-    return Rect.fromLTWH(posX, posY, widgetWidth, widgetHeight);
+    return Rect.fromLTWH(_MapController.posX, _MapController.posY,
+        _MapController.destWidth, _MapController.destHeight);
   }
 }
 

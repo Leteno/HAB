@@ -7,14 +7,12 @@ import 'package:ui/sprite/sprite.dart';
 import 'package:ui/sprite/sprite_tile.dart';
 
 class Monster extends Sprite {
-  late GameSpriteWidgetData widgetData;
-  Monster(super.posX, super.posY, super.widgetWidth, super.widgetHeight) {
-    widgetData = GameSpriteWidgetData(
-        MouseTileData(), posX, posY, widgetWidth, widgetHeight);
-  }
+  Monster(posX, posY, widgetWidth, widgetHeight)
+      : super(GameSpriteWidgetData(MouseTileData(), posX * 1.0, posY * 1.0,
+            widgetWidth * 1.0, widgetHeight * 1.0));
 
   void moveRight() {
-    posX = widgetData.posX += 1;
+    widgetData.posX += 1;
     widgetData.update();
     IntAnimation animation = IntAnimation(1000, 1, 8);
     animation.onValueChange = (value) {
@@ -41,15 +39,17 @@ class Monster extends Sprite {
     // TODO refactor
     GameTileData tileData = widgetData.tileData;
     return Rect.fromLTWH(
-        posX +
+        widgetData.posX +
             widgetData.widgetWidth *
                 (1.0 - tileData.tileActualWidth / tileData.tileWidth) /
                 2,
-        posY +
+        widgetData.posY +
             widgetData.widgetHeight *
                 (1.0 - tileData.tileActualHeight / tileData.tileHeight) /
                 2,
-        widgetWidth * tileData.tileActualWidth / tileData.tileWidth,
-        widgetHeight * tileData.tileActualHeight / tileData.tileHeight);
+        widgetData.widgetWidth * tileData.tileActualWidth / tileData.tileWidth,
+        widgetData.widgetHeight *
+            tileData.tileActualHeight /
+            tileData.tileHeight);
   }
 }

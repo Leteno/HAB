@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ui/data/game_sprite_data.dart';
+import 'package:ui/data/game_tile_data.dart';
 import 'package:ui/frame/collision_world.dart';
 import 'package:ui/frame/game_map.dart';
 import 'package:ui/sprite/sprite.dart';
@@ -41,7 +43,8 @@ void main() {
 
 class TestSprite extends Sprite {
   TestSprite(posX, posY, widgetWidth, widgetHeight)
-      : super(posX * 1.0, posY * 1.0, widgetWidth * 1.0, widgetHeight * 1.0);
+      : super(GameSpriteWidgetData(GameTileData('', 1, 1, 1, 1, 1, 1),
+            posX * 1.0, posY * 1.0, widgetWidth * 1.0, widgetHeight * 1.0));
   @override
   Widget build() {
     // TODO: implement build
@@ -50,6 +53,7 @@ class TestSprite extends Sprite {
 
   @override
   Rect getCollisionArea() {
-    return Rect.fromLTWH(posX, posY, widgetWidth, widgetHeight);
+    return Rect.fromLTWH(widgetData.posX, widgetData.posY,
+        widgetData.widgetWidth, widgetData.widgetHeight);
   }
 }

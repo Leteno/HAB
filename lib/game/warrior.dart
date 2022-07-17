@@ -9,11 +9,9 @@ import 'package:ui/sprite/sprite.dart';
 import 'package:ui/sprite/sprite_tile.dart';
 
 class Warrior extends Sprite {
-  late GameSpriteWidgetData widgetData;
-  Warrior(super.posX, super.posY, super.widgetWidth, super.widgetHeight) {
-    widgetData = GameSpriteWidgetData(
-        WarriorTileData(), posX, posY, widgetWidth, widgetHeight);
-  }
+  Warrior(posX, posY, widgetWidth, widgetHeight)
+      : super(GameSpriteWidgetData(WarriorTileData(), posX * 1.0, posY * 1.0,
+            widgetWidth * 1.0, widgetHeight * 1.0));
 
   @override
   Widget build() {
@@ -23,7 +21,7 @@ class Warrior extends Sprite {
   }
 
   void moveRight() {
-    posX = widgetData.posX += 1;
+    widgetData.posX += 1;
     widgetData.update();
 
     IntAnimation animation = IntAnimation(1000, 1, 6);
@@ -43,13 +41,13 @@ class Warrior extends Sprite {
     DoubleAnimation animation = DoubleAnimation(2000, 0, 100);
     double originalPoxY = widgetData.posY;
     animation.onValueChange = (value) {
-      posY = widgetData.posY = originalPoxY - value;
+      widgetData.posY = originalPoxY - value;
       widgetData.update();
     };
     animation.onStop = () {
       DoubleAnimation animation = DoubleAnimation(2000, 100, 0);
       animation.onValueChange = ((value) {
-        posY = widgetData.posY = originalPoxY - value;
+        widgetData.posY = originalPoxY - value;
         widgetData.update();
       });
       animationMap['human'] = animation;
@@ -61,15 +59,17 @@ class Warrior extends Sprite {
   Rect getCollisionArea() {
     GameTileData tileData = widgetData.tileData;
     return Rect.fromLTWH(
-        posX +
+        widgetData.posX +
             widgetData.widgetWidth *
                 (1.0 - tileData.tileActualWidth / tileData.tileWidth) /
                 2,
-        posY +
+        widgetData.posY +
             widgetData.widgetHeight *
                 (1.0 - tileData.tileActualHeight / tileData.tileHeight) /
                 2,
-        widgetWidth * tileData.tileActualWidth / tileData.tileWidth,
-        widgetHeight * tileData.tileActualHeight / tileData.tileHeight);
+        widgetData.widgetWidth * tileData.tileActualWidth / tileData.tileWidth,
+        widgetData.widgetHeight *
+            tileData.tileActualHeight /
+            tileData.tileHeight);
   }
 }

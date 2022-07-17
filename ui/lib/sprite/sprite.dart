@@ -1,19 +1,11 @@
 import 'package:flutter/widgets.dart' hide Animation;
 import 'package:ui/animation/animation.dart' show Animation;
+import 'package:ui/data/game_sprite_data.dart';
 
 abstract class Sprite {
-  double posX;
-  double posY;
-  // Size when draw sprite, include white space region.
-  double widgetWidth;
-  double widgetHeight;
+  GameSpriteWidgetData widgetData;
   Map<String, Animation> animationMap = {};
-  Sprite(
-    this.posX,
-    this.posY,
-    this.widgetWidth,
-    this.widgetHeight,
-  );
+  Sprite(this.widgetData);
 
   Widget build();
   // updateLogic will call first, then it is updateUIIfNeeded
