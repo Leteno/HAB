@@ -57,19 +57,6 @@ class Warrior extends Sprite {
 
   @override
   Rect getCollisionArea() {
-    GameTileData tileData = widgetData.tileData;
-    return Rect.fromLTWH(
-        widgetData.posX +
-            widgetData.widgetWidth *
-                (1.0 - tileData.tileActualWidth / tileData.tileWidth) /
-                2,
-        widgetData.posY +
-            widgetData.widgetHeight *
-                (1.0 - tileData.tileActualHeight / tileData.tileHeight) /
-                2,
-        widgetData.widgetWidth * tileData.tileActualWidth / tileData.tileWidth,
-        widgetData.widgetHeight *
-            tileData.tileActualHeight /
-            tileData.tileHeight);
+    return getCenteredCollisionArea();
   }
 }
