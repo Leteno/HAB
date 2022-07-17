@@ -6,29 +6,36 @@ import 'package:ui/physic/direction.dart';
 import 'package:ui/sprite/sprite.dart';
 
 class CollisionWorld {
+  late GameMap _map;
+  double extraOffsetLeft = 0;
+  double extraOffsetTop = 0;
+
+  bindGameMap(GameMap map) {
+    _map = map;
+  }
+
   // this will correct collision
-  bool testCollision(
-      GameMap map, double offsetLeft, double offsetTop, Sprite sprite) {
+  bool testCollision(Sprite sprite) {
     Rect area = sprite.getCollisionArea();
-    double left = area.left - offsetLeft;
-    double top = -offsetTop + area.top;
+    double left = area.left - extraOffsetLeft;
+    double top = -extraOffsetTop + area.top;
     double right = left + area.width;
     double bottom = top + area.height;
 
-    int startXIndex = (left / map.gridSizeX).floor();
-    int endXIndex = (right / map.gridSizeX).floor();
-    int startYIndex = (top / map.gridSizeY).floor();
-    int endYIndex = (bottom / map.gridSizeY).floor();
+    int startXIndex = (left / _map.gridSizeX).floor();
+    int endXIndex = (right / _map.gridSizeX).floor();
+    int startYIndex = (top / _map.gridSizeY).floor();
+    int endYIndex = (bottom / _map.gridSizeY).floor();
 
     for (int y = startYIndex; y <= endYIndex; y++) {
-      if (y < 0 || y >= map.rowCount) {
+      if (y < 0 || y >= _map.rowCount) {
         return true;
       }
       for (int x = startXIndex; x <= endXIndex; x++) {
-        if (x < 0 || x >= map.columnCount) {
+        if (x < 0 || x >= _map.columnCount) {
           return true;
         }
-        if (map.isOccupy(x, y)) {
+        if (_map.isOccupy(x, y)) {
           return true;
         }
       }
@@ -37,49 +44,48 @@ class CollisionWorld {
   }
 
   /*
-   * Assume current sprite is not collision with map.
+   * Assume current sprite is not collision with _map.
    * Now we have offset(dx, dy), if not collision we shall return
    * empty CollisionResult with isCollision:false
    * 
    * If we have collision, we need to calculate the CollisionResult for
    * how many offset we need to step back.
    */
-  CollisionResult detectCollision(GameMap map, double offsetLeft,
-      double offsetTop, Sprite sprite, Offset offset) {
+  CollisionResult detectCollision(Sprite sprite, Offset offset) {
     double horizontalCorrection = 0;
     double verticalCorrection = 0;
 
     Rect area = sprite.getCollisionArea();
-    double left = area.left - offsetLeft;
-    double top = -offsetTop + area.top;
+    double left = area.left - extraOffsetLeft;
+    double top = -extraOffsetTop + area.top;
     double right = left + area.width;
     double bottom = top + area.height;
 
-    int startXIndex = (left / map.gridSizeX).floor();
-    int endXIndex = (right / map.gridSizeX).floor();
-    int startYIndex = (top / map.gridSizeY).floor();
-    int endYIndex = (bottom / map.gridSizeY).floor();
+    int startXIndex = (left / _map.gridSizeX).floor();
+    int endXIndex = (right / _map.gridSizeX).floor();
+    int startYIndex = (top / _map.gridSizeY).floor();
+    int endYIndex = (bottom / _map.gridSizeY).floor();
 
-    int newStartXIndex = ((left + offset.dx) / map.gridSizeX).floor();
-    int newEndXIndex = ((right + offset.dx) / map.gridSizeX).floor();
-    int newStartYIndex = ((top + offset.dy) / map.gridSizeY).floor();
-    int newEndYIndex = ((bottom + offset.dy) / map.gridSizeY).floor();
+    int newStartXIndex = ((left + offset.dx) / _map.gridSizeX).floor();
+    int newEndXIndex = ((right + offset.dx) / _map.gridSizeX).floor();
+    int newStartYIndex = ((top + offset.dy) / _map.gridSizeY).floor();
+    int newEndYIndex = ((bottom + offset.dy) / _map.gridSizeY).floor();
 
     if (offset.dx > 0 && newEndXIndex != endXIndex) {
       int neareastBlock = 0;
       for (int y = startYIndex; y <= endYIndex; y++) {
-        neareastBlock =
-            min(map.nearestBlock(endXIndex, y, Direction.RIGHT), neareastBlock);
+        neareastBlock = min(
+            _map.nearestBlock(endXIndex, y, Direction.RIGHT), neareastBlock);
       }
-      double maxXOffset = map.gridSizeX * (endXIndex + 1) - right;
+      double maxXOffset = _map.gridSizeX * (endXIndex + 1) - right;
       horizontalCorrection = min(maxXOffset, offset.dx) - offset.dx;
     } else if (offset.dx < 0 && newStartXIndex != startXIndex) {
       int neareastBlock = 0;
       for (int y = startYIndex; y <= endYIndex; y++) {
         neareastBlock = max(
-            map.nearestBlock(startXIndex, y, Direction.LEFT), neareastBlock);
+            _map.nearestBlock(startXIndex, y, Direction.LEFT), neareastBlock);
       }
-      double maxXOffset = map.gridSizeX * startXIndex - left;
+      double maxXOffset = _map.gridSizeX * startXIndex - left;
       horizontalCorrection = max(maxXOffset, offset.dx) - offset.dx;
     }
 
@@ -87,17 +93,17 @@ class CollisionWorld {
       int neareastBlock = 0;
       for (int x = startXIndex; x <= endXIndex; x++) {
         neareastBlock =
-            min(map.nearestBlock(x, endYIndex, Direction.DOWN), neareastBlock);
+            min(_map.nearestBlock(x, endYIndex, Direction.DOWN), neareastBlock);
       }
-      double maxYOffset = map.gridSizeY * (endYIndex + 1) - bottom;
+      double maxYOffset = _map.gridSizeY * (endYIndex + 1) - bottom;
       verticalCorrection = min(maxYOffset, offset.dy) - offset.dy;
     } else if (offset.dy < 0 && newStartYIndex != startYIndex) {
       int neareastBlock = 0;
       for (int x = startXIndex; x <= endXIndex; x++) {
         neareastBlock = max(
-            map.nearestBlock(x, startYIndex, Direction.DOWN), neareastBlock);
+            _map.nearestBlock(x, startYIndex, Direction.DOWN), neareastBlock);
       }
-      double maxYOffset = map.gridSizeY * startYIndex - top;
+      double maxYOffset = _map.gridSizeY * startYIndex - top;
       verticalCorrection = max(maxYOffset, offset.dy) - offset.dy;
     }
 

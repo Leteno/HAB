@@ -15,7 +15,8 @@ class ExampleScene extends Scene {
   ExampleScene() {
     mapSprite = SimpleMap(0, 0, 0, 0, 32, 32);
     _map = mapSprite.gameMap();
-    warrior = Warrior(_map, collisionWorld, 20, 120, 80, 80);
+    collisionWorld.bindGameMap(_map);
+    warrior = Warrior(collisionWorld, 20, 120, 80, 80);
     addSprite(warrior);
   }
 

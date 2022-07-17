@@ -4,16 +4,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hab_repo/data/warrior_tile_data.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
-import 'package:ui/data/game_tile_data.dart';
 import 'package:ui/frame/collision_world.dart';
-import 'package:ui/frame/game_map.dart';
 import 'package:ui/sprite/sprite.dart';
 import 'package:ui/sprite/sprite_tile.dart';
 
 class Warrior extends Sprite {
-  GameMap map;
   CollisionWorld collisionWorld;
-  Warrior(this.map, this.collisionWorld, posX, posY, widgetWidth, widgetHeight)
+  Warrior(this.collisionWorld, posX, posY, widgetWidth, widgetHeight)
       : super(GameSpriteWidgetData(WarriorTileData(), posX * 1.0, posY * 1.0,
             widgetWidth * 1.0, widgetHeight * 1.0));
 
@@ -26,7 +23,7 @@ class Warrior extends Sprite {
 
   void moveRight() {
     widgetData.posX += 1;
-    if (collisionWorld.testCollision(map, 0, 0, this)) {
+    if (collisionWorld.testCollision(this)) {
       widgetData.posX -= 1;
     } else {
       widgetData.update();
@@ -51,7 +48,7 @@ class Warrior extends Sprite {
     animation.onValueChange = (value) {
       double previous = widgetData.posY;
       widgetData.posY = originalPoxY - value;
-      if (collisionWorld.testCollision(map, 0, 0, this)) {
+      if (collisionWorld.testCollision(this)) {
         widgetData.posY = previous;
       } else {
         widgetData.update();
@@ -62,7 +59,7 @@ class Warrior extends Sprite {
       animation.onValueChange = ((value) {
         double previous = widgetData.posY;
         widgetData.posY = originalPoxY - value;
-        if (collisionWorld.testCollision(map, 0, 0, this)) {
+        if (collisionWorld.testCollision(this)) {
           widgetData.posY = previous;
         } else {
           widgetData.update();
