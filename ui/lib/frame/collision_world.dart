@@ -17,11 +17,11 @@ class CollisionWorld {
     int startYIndex = (top / map.gridSizeY).floor();
     int endYIndex = (bottom / map.gridSizeY).floor();
 
-    for (int y = startYIndex; y < endYIndex; y++) {
+    for (int y = startYIndex; y <= endYIndex; y++) {
       if (y < 0 || y >= map.rowCount) {
         return true;
       }
-      for (int x = startXIndex; x < endXIndex; x++) {
+      for (int x = startXIndex; x <= endXIndex; x++) {
         if (x < 0 || x >= map.columnCount) {
           return true;
         }
