@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ui/animation/animation.dart';
+import 'package:ui/frame/game_map.dart';
 import 'package:ui/frame/scene.dart';
 import 'package:ui/keyboard/game_event.dart';
 
@@ -73,4 +74,10 @@ class SceneForTest extends Scene {
 
   @override
   void onKey(GameEventType event) {}
+
+  @override
+  GameMap getGameMap() {
+    // TODO: implement getGameMap
+    throw UnimplementedError();
+  }
 }
