@@ -23,7 +23,7 @@ class ExampleScene extends Scene {
   @override
   void onKey(GameEventType event) {
     if (event == GameEventType.LEFT) {
-      warrior.moveRight();
+      warrior.moveLeft();
     } else if (event == GameEventType.RIGHT) {
       warrior.moveRight();
     } else if (event == GameEventType.JUMP) {

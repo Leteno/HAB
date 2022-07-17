@@ -21,6 +21,27 @@ class Warrior extends Sprite {
     );
   }
 
+  void moveLeft() {
+    widgetData.posX -= 1;
+    if (collisionWorld.testCollision(this)) {
+      widgetData.posX += 1;
+    } else {
+      widgetData.update();
+    }
+
+    IntAnimation animation = IntAnimation(1000, 1, 6);
+    animation.onValueChange = (value) {
+      if (value == 6) {
+        value = 1;
+      }
+      widgetData.tileData.imageSpriteIndexX = value;
+      widgetData.update();
+    };
+    if (!animationMap.containsKey('human')) {
+      animationMap['human'] = animation;
+    }
+  }
+
   void moveRight() {
     widgetData.posX += 1;
     if (collisionWorld.testCollision(this)) {
