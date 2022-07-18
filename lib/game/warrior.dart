@@ -97,4 +97,13 @@ class Warrior extends Sprite {
   Rect getCollisionArea() {
     return getCenteredCollisionArea();
   }
+
+  @override
+  void onIdle() {
+    AnimationData data = widgetData.tileData.getAnimationData(SpriteState.IDLE);
+    IntAnimation animation = data.buildAnimation(800, widgetData.tileData, () {
+      widgetData.update();
+    });
+    animationMap['idle'] = animation;
+  }
 }

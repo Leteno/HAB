@@ -31,6 +31,9 @@ abstract class Sprite {
           }
         }
       }
+    } else {
+      // No animation stuff
+      onIdle();
     }
   }
 
@@ -50,4 +53,6 @@ abstract class Sprite {
             tileData.tileActualHeight /
             tileData.tileHeight);
   }
+
+  void onIdle() {}
 }
