@@ -30,6 +30,7 @@ class Warrior extends Sprite {
       widgetData.update();
     }
 
+    widgetData.tileData.reverseDirection = true;
     AnimationData data =
         widgetData.tileData.getAnimationData(SpriteState.WALKING);
     IntAnimation animation = data.buildAnimation(1000, widgetData.tileData, () {
@@ -48,6 +49,7 @@ class Warrior extends Sprite {
       widgetData.update();
     }
 
+    widgetData.tileData.reverseDirection = false;
     AnimationData data =
         widgetData.tileData.getAnimationData(SpriteState.WALKING);
     IntAnimation animation = data.buildAnimation(1000, widgetData.tileData, () {

@@ -20,6 +20,7 @@ class GameTileData {
   double imageSpriteStartPoxY = 0;
   int imageSpriteIndexX = 1;
   int imageSpriteIndexY = 0;
+  bool reverseDirection = false;
 
   Map<String, AnimationData> state2Animation = {};
 

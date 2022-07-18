@@ -44,7 +44,8 @@ class _SpritePainter extends CustomPainter {
             tileData.imageSpriteIndexY * tileData.tileHeight,
         tileData.tileWidth,
         tileData.tileHeight);
-    Rect dst = Rect.fromLTWH(0, 0, size.width, size.height);
+    // Rect dst = Rect.fromLTWH(0, 0, size.width, size.height);
+    Rect dst = Rect.fromLTRB(0, 0, size.width, size.height);
     if (isDebug) {
       // Draw area
       canvas.drawRect(dst, Paint()..color = Colors.white70);
@@ -61,6 +62,10 @@ class _SpritePainter extends CustomPainter {
             size.height * tileData.tileActualHeight / tileData.tileHeight,
           ),
           Paint()..color = Colors.black54);
+    }
+    if (tileData.reverseDirection) {
+      canvas.scale(-1, 1);
+      canvas.translate(-size.width, 0);
     }
     canvas.drawImageRect(image, src, dst, Paint());
     canvas.restore();
