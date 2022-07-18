@@ -13,10 +13,10 @@ class ExampleScene extends Scene {
   late Warrior warrior;
 
   ExampleScene() {
-    mapSprite = SimpleMap(0, 0, 0, 0, 32, 32);
+    mapSprite = SimpleMap(0, 0, 0, 0, 80, 80);
     _map = mapSprite.gameMap();
     collisionWorld.bindGameMap(_map);
-    warrior = Warrior(collisionWorld, 20, 120, 80, 80);
+    warrior = Warrior(collisionWorld, 80, 480, 80, 80);
     addSprite(warrior);
   }
 
