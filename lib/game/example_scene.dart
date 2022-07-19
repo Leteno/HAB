@@ -11,6 +11,7 @@ class ExampleScene extends Scene {
   late SimpleMap mapSprite;
   late GameMap _map;
   late Warrior warrior;
+  late Monster rat;
 
   ExampleScene() {
     mapSprite = SimpleMap(0, 0, 0, 0, 80, 80);
@@ -18,6 +19,9 @@ class ExampleScene extends Scene {
     collisionWorld.bindGameMap(_map);
     warrior = Warrior(collisionWorld, 80, 480, 80, 80);
     addSprite(warrior);
+
+    rat = Monster(100, 180, 80, 80);
+    addSprite(rat);
   }
 
   @override
@@ -36,6 +40,7 @@ class ExampleScene extends Scene {
     return Stack(
       children: [
         mapSprite.build(),
+        rat.build(),
         warrior.build(),
       ],
     );
