@@ -22,4 +22,18 @@ class GameSpriteWidgetData {
       _state.setState(() {});
     }
   }
+
+  Rect getCenteredCollisionArea() {
+    return Rect.fromLTWH(
+        posX +
+            widgetWidth *
+                (1.0 - tileData.tileActualWidth / tileData.tileWidth) /
+                2,
+        posY +
+            widgetHeight *
+                (1.0 - tileData.tileActualHeight / tileData.tileHeight) /
+                2,
+        widgetWidth * tileData.tileActualWidth / tileData.tileWidth,
+        widgetHeight * tileData.tileActualHeight / tileData.tileHeight);
+  }
 }
