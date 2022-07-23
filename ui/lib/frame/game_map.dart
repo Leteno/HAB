@@ -136,7 +136,8 @@ class GameMap {
       rightAtMostGridCount = min(rightAtMostGridCount, gridCount);
     }
     // Here, area.right >= gridSizeX * endXIndex
-    double rightAtLeastOffset = gridSizeX - area.right % gridSizeX;
+    double rightAtLeastOffset =
+        (gridSizeX - area.right % gridSizeX) % gridSizeX; // TODO(juzhen) perf
     region.rightAtMostOffset =
         rightAtLeastOffset + rightAtMostGridCount * gridSizeX;
 
