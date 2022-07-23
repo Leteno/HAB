@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:hab_repo/game/monster.dart';
+import 'package:ui/animation/animation.dart';
 import 'package:ui/frame/game_map.dart';
 import 'package:ui/frame/scene.dart';
 import 'package:ui/keyboard/game_event.dart';
@@ -22,6 +23,37 @@ class ExampleScene extends Scene {
 
     rat = Monster(100, 180, 80, 80);
     addSprite(rat);
+    WonderingRegion region = _map.getWonderingRegion(rat.widgetData);
+    print(
+        "rat would wonder ${region.leftAtMostOffset} to ${region.rightAtMostOffset}");
+    var ratSpeed = 100;
+    DoubleAnimation goRight = DoubleAnimation(
+        (region.rightAtMostOffset * 1000 / ratSpeed).ceil(),
+        0,
+        region.rightAtMostOffset);
+    var originalX = rat.widgetData.posX;
+    goRight.onValueChange = (value) {
+      rat.moveRight();
+      rat.widgetData.posX = originalX + value;
+      rat.widgetData.update();
+    };
+    var distance = region.rightAtMostOffset + region.leftAtMostOffset;
+    DoubleAnimation goLeft =
+        DoubleAnimation((distance * 1000 / ratSpeed).ceil(), 0, distance);
+    goLeft.onValueChange = (value) {
+      rat.moveLeft();
+      rat.widgetData.posX = originalX + region.rightAtMostOffset - value;
+      rat.widgetData.update();
+    };
+    goRight.onStop = () {
+      goLeft.reset();
+      animationMap['rat'] = goLeft;
+    };
+    goLeft.onStop = () {
+      goRight.reset();
+      animationMap['rat'] = goRight;
+    };
+    animationMap['rat'] = goRight;
   }
 
   @override

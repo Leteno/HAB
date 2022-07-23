@@ -20,6 +20,11 @@ abstract class Animation<T extends num> {
   bool isStop() {
     return left == 0;
   }
+
+  void reset() {
+    left = duration;
+    value = begin;
+  }
 }
 
 class DoubleAnimation extends Animation<double> {

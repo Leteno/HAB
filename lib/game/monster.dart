@@ -12,7 +12,23 @@ class Monster extends Sprite {
             widgetWidth * 1.0, widgetHeight * 1.0));
 
   void moveRight() {
-    widgetData.posX += 1;
+    widgetData.tileData.reverseDirection = false;
+    widgetData.update();
+    IntAnimation animation = IntAnimation(1000, 1, 8);
+    animation.onValueChange = (value) {
+      if (value == 8) {
+        value = 1;
+      }
+      widgetData.tileData.imageSpriteIndexX = value;
+      widgetData.update();
+    };
+    if (!animationMap.containsKey('rat')) {
+      animationMap['rat'] = animation;
+    }
+  }
+
+  void moveLeft() {
+    widgetData.tileData.reverseDirection = true;
     widgetData.update();
     IntAnimation animation = IntAnimation(1000, 1, 8);
     animation.onValueChange = (value) {
