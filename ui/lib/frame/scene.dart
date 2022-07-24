@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart' hide Animation;
 import 'package:ui/animation/animation.dart' show Animation;
 import 'package:ui/frame/collision_world.dart';
 import 'package:ui/frame/game_map.dart';
+import 'package:ui/frame/gravity_world.dart';
 import 'package:ui/keyboard/game_event.dart';
 
 import '../sprite/sprite.dart';
@@ -11,6 +12,7 @@ abstract class Scene {
   Map<String, Animation> animationMap = {};
 
   CollisionWorld collisionWorld = CollisionWorld();
+  GravityWorld gravityWorld = GravityWorld();
 
   void addSprite(Sprite sprite) {
     _spriteList.add(sprite);
@@ -37,6 +39,7 @@ abstract class Scene {
     for (var sprite in _spriteList) {
       sprite.animate(elapse);
     }
+    gravityWorld.animate(elapse);
   }
 
   GameMap getGameMap();

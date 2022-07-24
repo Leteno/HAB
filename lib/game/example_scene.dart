@@ -18,11 +18,15 @@ class ExampleScene extends Scene {
     mapSprite = SimpleMap(0, 0, 0, 0, 80, 80);
     _map = mapSprite.gameMap();
     collisionWorld.bindGameMap(_map);
+    gravityWorld.bindGameMap(_map);
     warrior = Warrior(collisionWorld, 80, 480, 80, 80);
     addSprite(warrior);
+    gravityWorld.applyGravity(warrior.widgetData);
 
-    rat = Monster(100, 180, 80, 80);
+    rat = Monster(80, 180, 80, 80);
     addSprite(rat);
+    gravityWorld.applyGravity(rat.widgetData);
+
     WonderingRegion region =
         _map.getWonderingRegion(rat.widgetData, standGround: true);
     print(
