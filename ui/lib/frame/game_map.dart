@@ -206,6 +206,43 @@ class GameMap {
     double atLeastOffset = (gridSizeY - area.bottom % gridSizeY) % gridSizeY;
     return atLeastOffset + gridBelowAtMost * gridSizeY;
   }
+
+  bool hasCollision(GameSpriteWidgetData widgetData) {
+    WonderingRegion region = WonderingRegion();
+    Rect area = widgetData.getCenteredCollisionArea();
+
+    int startXIndex = (area.left / gridSizeX).floor();
+    int endXIndex = (area.right / gridSizeX).floor();
+    int startYIndex = (area.top / gridSizeY).floor();
+    int endYIndex = (area.bottom / gridSizeY).floor();
+
+    // if (area.right, area.bottom) is percisely in grid boundary,
+    // endXIndex/endYIndex would be real number + 1.
+    // Such as (20, 20, 20, 20) in grid 20x20.
+    // it should be percisely position(1, 1)
+    // However, here would calcuated as (1,1)~(2,2)
+    // Here we do a small correction here.
+    if (endXIndex * gridSizeX == area.right) {
+      endXIndex--;
+    }
+    if (endYIndex * gridSizeY == area.bottom) {
+      endYIndex--;
+    }
+    // To virtual map coordinate, (x+1, y+1)
+    int vStartXIndex = startXIndex + 1;
+    int vEndXIndex = endXIndex + 1;
+    int vStartYIndex = startYIndex + 1;
+    int vEndYIndex = endYIndex + 1;
+
+    for (int y = vStartYIndex; y <= vEndYIndex; y++) {
+      for (int x = vStartXIndex; x <= vEndXIndex; x++) {
+        if (virtualMapData[y][x] != 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
 
 class WonderingRegion {

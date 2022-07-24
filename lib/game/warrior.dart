@@ -24,7 +24,7 @@ class Warrior extends Sprite {
 
   void moveLeft() {
     widgetData.posX -= 1;
-    if (collisionWorld.testCollision(this)) {
+    if (collisionWorld.hasCollision(this)) {
       widgetData.posX += 1;
     } else {
       widgetData.update();
@@ -43,7 +43,7 @@ class Warrior extends Sprite {
 
   void moveRight() {
     widgetData.posX += 1;
-    if (collisionWorld.testCollision(this)) {
+    if (collisionWorld.hasCollision(this)) {
       widgetData.posX -= 1;
     } else {
       widgetData.update();
@@ -72,7 +72,7 @@ class Warrior extends Sprite {
     movingAnimation.onValueChange = (value) {
       double previous = widgetData.posY;
       widgetData.posY = originalPoxY - value;
-      if (collisionWorld.testCollision(this)) {
+      if (collisionWorld.hasCollision(this)) {
         widgetData.posY = previous;
       } else {
         widgetData.update();

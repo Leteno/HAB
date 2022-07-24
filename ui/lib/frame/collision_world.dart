@@ -14,6 +14,11 @@ class CollisionWorld {
     _map = map;
   }
 
+  bool hasCollision(Sprite sprite) {
+    return _map.hasCollision(sprite.widgetData);
+  }
+
+  // Deprecated: use hasCollision instead.
   // this will correct collision
   bool testCollision(Sprite sprite) {
     Rect area = sprite.getCollisionArea();

@@ -134,6 +134,18 @@ void main() {
         SimpleGameSpriteWidgetData(21, 11, 10, 10);
     expect(map.fallingDistance(widgetData4), 19);
   });
+
+  test('hasCollision', () {
+    GameMap map = GameMap([0, 0, 0, 1, 0, 0, 1, 1, 0], 3, 3, 20, 20);
+
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(0, 0, 10, 10)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(0, 0, 20, 20)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(1, 0, 20, 20)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(0, 1, 20, 20)), true);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(20, 20, 20, 20)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(21, 20, 20, 20)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(20, 21, 20, 20)), true);
+  });
 }
 
 class SimpleGameSpriteWidgetData extends GameSpriteWidgetData {
