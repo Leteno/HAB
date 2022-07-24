@@ -28,12 +28,12 @@ class ExampleScene extends Scene {
     print(
         "rat would wonder ${region.leftAtMostOffset} to ${region.rightAtMostOffset}");
     var ratSpeed = 100;
-    DoubleAnimation goRight = DoubleAnimation(
+    DoubleAnimation firstGoRight = DoubleAnimation(
         (region.rightAtMostOffset * 1000 / ratSpeed).ceil(),
         0,
         region.rightAtMostOffset);
     var originalX = rat.widgetData.posX;
-    goRight.onValueChange = (value) {
+    firstGoRight.onValueChange = (value) {
       rat.moveRight();
       rat.widgetData.posX = originalX + value;
       rat.widgetData.update();
@@ -46,7 +46,14 @@ class ExampleScene extends Scene {
       rat.widgetData.posX = originalX + region.rightAtMostOffset - value;
       rat.widgetData.update();
     };
-    goRight.onStop = () {
+    DoubleAnimation goRight =
+        DoubleAnimation((distance * 1000 / ratSpeed).ceil(), distance, 0);
+    goRight.onValueChange = (value) {
+      rat.moveRight();
+      rat.widgetData.posX = originalX + region.rightAtMostOffset - value;
+      rat.widgetData.update();
+    };
+    firstGoRight.onStop = () {
       goLeft.reset();
       animationMap['rat'] = goLeft;
     };
@@ -54,7 +61,11 @@ class ExampleScene extends Scene {
       goRight.reset();
       animationMap['rat'] = goRight;
     };
-    animationMap['rat'] = goRight;
+    goRight.onStop = () {
+      goLeft.reset();
+      animationMap['rat'] = goLeft;
+    };
+    animationMap['rat'] = firstGoRight;
   }
 
   @override
