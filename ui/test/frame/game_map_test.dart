@@ -84,6 +84,20 @@ void main() {
     expect(region3.leftAtMostOffset, 1);
     expect(region3.rightAtMostOffset, 9);
   });
+  test('getWonderingRegion-standGround', () {
+    GameMap map = GameMap([0, 0, 0, 0, 0, 0, 1, 1, 0], 3, 3, 20, 20);
+
+    GameSpriteWidgetData widgetData1 =
+        SimpleGameSpriteWidgetData(21, 21, 10, 10);
+    WonderingRegion region1 = map.getWonderingRegion(widgetData1);
+    expect(region1.leftAtMostOffset, 21);
+    expect(region1.rightAtMostOffset, 29);
+
+    WonderingRegion region2 =
+        map.getWonderingRegion(widgetData1, standGround: true);
+    expect(region2.leftAtMostOffset, 21);
+    expect(region2.rightAtMostOffset, 9);
+  });
 }
 
 class SimpleGameSpriteWidgetData extends GameSpriteWidgetData {

@@ -91,7 +91,8 @@ class GameMap {
   // We need to calculate how many distance it could go left
   // how many distance it could go right.
   // return { 'left': 12, 'right': 12 }
-  WonderingRegion getWonderingRegion(GameSpriteWidgetData widgetData) {
+  WonderingRegion getWonderingRegion(GameSpriteWidgetData widgetData,
+      {bool standGround = false}) {
     WonderingRegion region = WonderingRegion();
     Rect area = widgetData.getCenteredCollisionArea();
 
@@ -114,6 +115,10 @@ class GameMap {
         if (virtualMapData[y][x] != 0) {
           break;
         }
+        if (standGround && virtualMapData[y + 1][x] == 0) {
+          // break if we need standGround and the block bellow is empty
+          break;
+        }
         gridCount++;
       }
       leftAtMostGridCount = min(leftAtMostGridCount, gridCount);
@@ -129,6 +134,10 @@ class GameMap {
       int gridCount = 0;
       for (int x = vEndXIndex + 1; x < vColumnCount; x++) {
         if (virtualMapData[y][x] != 0) {
+          break;
+        }
+        if (standGround && virtualMapData[y + 1][x] == 0) {
+          // break if we need standGround and the block bellow is empty
           break;
         }
         gridCount++;

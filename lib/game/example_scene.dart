@@ -23,7 +23,8 @@ class ExampleScene extends Scene {
 
     rat = Monster(99, 179, 80, 80);
     addSprite(rat);
-    WonderingRegion region = _map.getWonderingRegion(rat.widgetData);
+    WonderingRegion region =
+        _map.getWonderingRegion(rat.widgetData, standGround: true);
     print(
         "rat would wonder ${region.leftAtMostOffset} to ${region.rightAtMostOffset}");
     var ratSpeed = 100;
