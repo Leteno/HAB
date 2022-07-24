@@ -21,7 +21,7 @@ class ExampleScene extends Scene {
     warrior = Warrior(collisionWorld, 80, 480, 80, 80);
     addSprite(warrior);
 
-    rat = Monster(99, 179, 80, 80);
+    rat = Monster(100, 180, 80, 80);
     addSprite(rat);
     WonderingRegion region =
         _map.getWonderingRegion(rat.widgetData, standGround: true);

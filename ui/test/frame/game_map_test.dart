@@ -98,6 +98,23 @@ void main() {
     expect(region2.leftAtMostOffset, 21);
     expect(region2.rightAtMostOffset, 9);
   });
+
+  test('getWonderingRegion-perciseOnSurface', () {
+    GameMap map = GameMap([0, 0, 0, 0, 0, 0, 1, 1, 0], 3, 3, 20, 20);
+
+    GameSpriteWidgetData widgetData1 =
+        SimpleGameSpriteWidgetData(30, 30, 10, 10);
+    WonderingRegion region1 = map.getWonderingRegion(widgetData1);
+    expect(region1.leftAtMostOffset, 30);
+    expect(region1.rightAtMostOffset, 20);
+
+    GameSpriteWidgetData widgetData2 =
+        SimpleGameSpriteWidgetData(30, 30, 10, 10);
+    WonderingRegion region2 =
+        map.getWonderingRegion(widgetData2, standGround: true);
+    expect(region2.leftAtMostOffset, 30);
+    expect(region2.rightAtMostOffset, 0);
+  });
 }
 
 class SimpleGameSpriteWidgetData extends GameSpriteWidgetData {
