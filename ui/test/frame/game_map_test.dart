@@ -115,6 +115,25 @@ void main() {
     expect(region2.leftAtMostOffset, 30);
     expect(region2.rightAtMostOffset, 0);
   });
+
+  test('fallingDistance', () {
+    GameMap map = GameMap([0, 0, 0, 1, 0, 0, 1, 1, 0], 3, 3, 20, 20);
+
+    GameSpriteWidgetData widgetData1 = SimpleGameSpriteWidgetData(0, 0, 10, 10);
+    expect(map.fallingDistance(widgetData1), 10);
+
+    GameSpriteWidgetData widgetData2 =
+        SimpleGameSpriteWidgetData(30, 0, 10, 10);
+    expect(map.fallingDistance(widgetData2), 30);
+
+    GameSpriteWidgetData widgetData3 =
+        SimpleGameSpriteWidgetData(50, 0, 10, 10);
+    expect(map.fallingDistance(widgetData3), 50);
+
+    GameSpriteWidgetData widgetData4 =
+        SimpleGameSpriteWidgetData(21, 11, 10, 10);
+    expect(map.fallingDistance(widgetData4), 19);
+  });
 }
 
 class SimpleGameSpriteWidgetData extends GameSpriteWidgetData {
