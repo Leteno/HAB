@@ -21,11 +21,11 @@ class ExampleScene extends Scene {
     gravityWorld.bindGameMap(_map);
     warrior = Warrior(collisionWorld, 80, 480, 80, 80);
     addSprite(warrior);
-    gravityWorld.applyGravity(warrior.widgetData);
+    gravityWorld.registerListener(warrior.widgetData);
 
     rat = Monster(80, 180, 80, 80);
     addSprite(rat);
-    gravityWorld.applyGravity(rat.widgetData);
+    gravityWorld.registerListener(rat.widgetData);
 
     WonderingRegion region =
         _map.getWonderingRegion(rat.widgetData, standGround: true);

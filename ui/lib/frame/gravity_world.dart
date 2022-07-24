@@ -5,13 +5,19 @@ import 'package:ui/frame/game_map.dart';
 class GravityWorld {
   late GameMap _map;
   List<Animation> animations = [];
+  List<GameSpriteWidgetData> registeredWidgetDatas = [];
+
   double gravitySpeed = 100;
 
   void bindGameMap(GameMap map) {
     _map = map;
   }
 
-  void applyGravity(GameSpriteWidgetData widgetData) {
+  void registerListener(GameSpriteWidgetData widgetData) {
+    registeredWidgetDatas.add(widgetData);
+  }
+
+  void _applyGravity(GameSpriteWidgetData widgetData) {
     double distance = _map.fallingDistance(widgetData);
     if (distance <= 0) return;
     double currentY = widgetData.posY;
@@ -24,6 +30,12 @@ class GravityWorld {
   }
 
   void animate(int elapse) {
+    for (GameSpriteWidgetData widgetData in registeredWidgetDatas) {
+      if (widgetData.jumpFlag) {
+        _applyGravity(widgetData);
+        widgetData.jumpFlag = false;
+      }
+    }
     List<Animation> newAnimations = [];
     for (Animation animation in animations) {
       animation.elapse(elapse);

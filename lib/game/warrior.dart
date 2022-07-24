@@ -62,7 +62,7 @@ class Warrior extends Sprite {
 
   void jump() {
     AnimationData data = widgetData.tileData.getAnimationData(SpriteState.JUMP);
-    IntAnimation jumpAnimation =
+    IntAnimation jumpGraphicAnimation =
         data.buildAnimation(2000, widgetData.tileData, () {
       widgetData.update();
     });
@@ -79,20 +79,10 @@ class Warrior extends Sprite {
       }
     };
     movingAnimation.onStop = () {
-      DoubleAnimation animation = DoubleAnimation(2000, 100, 0);
-      animation.onValueChange = ((value) {
-        double previous = widgetData.posY;
-        widgetData.posY = originalPoxY - value;
-        if (collisionWorld.testCollision(this)) {
-          widgetData.posY = previous;
-        } else {
-          widgetData.update();
-        }
-      });
-      animationMap['human'] = animation;
+      widgetData.jumpFlag = true;
     };
     animationMap['human'] = movingAnimation;
-    animationMap['jump'] = jumpAnimation;
+    animationMap['jump'] = jumpGraphicAnimation;
   }
 
   @override

@@ -10,6 +10,8 @@ class GameSpriteWidgetData {
   GameTileData tileData;
   late State _state;
 
+  bool jumpFlag = true;
+
   GameSpriteWidgetData(
       this.tileData, this.posX, this.posY, this.widgetWidth, this.widgetHeight);
 
