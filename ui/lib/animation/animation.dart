@@ -21,6 +21,11 @@ abstract class Animation<T extends num> {
     return left == 0;
   }
 
+  void forceStop() {
+    left = 0;
+    onStop?.call();
+  }
+
   void reset() {
     left = duration;
     value = begin;

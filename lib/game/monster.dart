@@ -7,41 +7,11 @@ import 'package:ui/sprite/sprite.dart';
 import 'package:ui/sprite/sprite_tile.dart';
 
 class Monster extends Sprite {
-  Monster(posX, posY, widgetWidth, widgetHeight)
-      : super(GameSpriteWidgetData(MouseTileData(), posX * 1.0, posY * 1.0,
-            widgetWidth * 1.0, widgetHeight * 1.0));
-
-  void moveRight() {
-    widgetData.tileData.reverseDirection = false;
-    widgetData.update();
-    IntAnimation animation = IntAnimation(1000, 1, 8);
-    animation.onValueChange = (value) {
-      if (value == 8) {
-        value = 1;
-      }
-      widgetData.tileData.imageSpriteIndexX = value;
-      widgetData.update();
-    };
-    if (!animationMap.containsKey('rat')) {
-      animationMap['rat'] = animation;
-    }
-  }
-
-  void moveLeft() {
-    widgetData.tileData.reverseDirection = true;
-    widgetData.update();
-    IntAnimation animation = IntAnimation(1000, 1, 8);
-    animation.onValueChange = (value) {
-      if (value == 8) {
-        value = 1;
-      }
-      widgetData.tileData.imageSpriteIndexX = value;
-      widgetData.update();
-    };
-    if (!animationMap.containsKey('rat')) {
-      animationMap['rat'] = animation;
-    }
-  }
+  Monster(collisionWorld, posX, posY, widgetWidth, widgetHeight)
+      : super(
+            GameSpriteWidgetData(MouseTileData(), posX * 1.0, posY * 1.0,
+                widgetWidth * 1.0, widgetHeight * 1.0),
+            collisionWorld);
 
   @override
   Widget build() {

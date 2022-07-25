@@ -23,7 +23,7 @@ class ExampleScene extends Scene {
     addSprite(warrior);
     gravityWorld.registerListener(warrior.widgetData);
 
-    rat = Monster(80, 180, 80, 80);
+    rat = Monster(collisionWorld, 80, 180, 80, 80);
     addSprite(rat);
     gravityWorld.registerListener(rat.widgetData);
 
@@ -38,7 +38,7 @@ class ExampleScene extends Scene {
         region.rightAtMostOffset);
     var originalX = rat.widgetData.posX;
     firstGoRight.onValueChange = (value) {
-      rat.moveRight();
+      rat.movingRight();
       rat.widgetData.posX = originalX + value;
       rat.widgetData.update();
     };
@@ -46,14 +46,14 @@ class ExampleScene extends Scene {
     DoubleAnimation goLeft =
         DoubleAnimation((distance * 1000 / ratSpeed).ceil(), 0, distance);
     goLeft.onValueChange = (value) {
-      rat.moveLeft();
+      rat.movingLeft();
       rat.widgetData.posX = originalX + region.rightAtMostOffset - value;
       rat.widgetData.update();
     };
     DoubleAnimation goRight =
         DoubleAnimation((distance * 1000 / ratSpeed).ceil(), distance, 0);
     goRight.onValueChange = (value) {
-      rat.moveRight();
+      rat.movingRight();
       rat.widgetData.posX = originalX + region.rightAtMostOffset - value;
       rat.widgetData.update();
     };
@@ -75,11 +75,11 @@ class ExampleScene extends Scene {
   @override
   void onKey(GameEventType event) {
     if (event == GameEventType.LEFT) {
-      warrior.moveLeft();
+      warrior.movingLeft();
     } else if (event == GameEventType.RIGHT) {
-      warrior.moveRight();
+      warrior.movingRight();
     } else if (event == GameEventType.JUMP) {
-      warrior.jump();
+      warrior.jumping();
     }
   }
 

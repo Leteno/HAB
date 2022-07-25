@@ -72,8 +72,10 @@ void main() {
 
 class TestSprite extends Sprite {
   TestSprite(posX, posY, widgetWidth, widgetHeight)
-      : super(GameSpriteWidgetData(GameTileData('', 1, 1, 1, 1, 1, 1),
-            posX * 1.0, posY * 1.0, widgetWidth * 1.0, widgetHeight * 1.0));
+      : super(
+            GameSpriteWidgetData(GameTileData('', 1, 1, 1, 1, 1, 1), posX * 1.0,
+                posY * 1.0, widgetWidth * 1.0, widgetHeight * 1.0),
+            CollisionWorld());
   @override
   Widget build() {
     // TODO: implement build
