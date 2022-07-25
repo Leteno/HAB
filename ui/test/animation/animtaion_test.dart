@@ -118,4 +118,35 @@ void main() {
     expect(anim.isStop(), true);
     expect(callOnStop, true);
   });
+
+  test('test next animation', () {
+    DoubleAnimation animation1 = DoubleAnimation(1000, 0, 10);
+    DoubleAnimation animation2 = DoubleAnimation(1000, 100, 200);
+    animation1.next(animation2);
+
+    double value1 = animation1.begin;
+    animation1.onValueChange = (value) {
+      value1 = value;
+    };
+    double value2 = animation2.begin;
+    animation2.onValueChange = (value) {
+      value2 = value;
+    };
+
+    animation1.elapse(500);
+    expect(value1, 5);
+    expect(value2, 100);
+
+    animation1.elapse(500);
+    expect(value1, 10);
+    expect(value2, 100);
+
+    animation1.elapse(500);
+    expect(value1, 10);
+    expect(value2, 150);
+
+    animation1.elapse(500);
+    expect(value1, 10);
+    expect(value2, 200);
+  });
 }

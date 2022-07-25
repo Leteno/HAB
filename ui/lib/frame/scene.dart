@@ -30,7 +30,7 @@ abstract class Scene {
       }
       if (removes.isNotEmpty) {
         for (var key in removes.keys) {
-          if (removes[key] == animationMap[key]) {
+          if (removes[key] == animationMap[key] && removes[key]!.isStop()) {
             animationMap.remove(key);
           }
         }
