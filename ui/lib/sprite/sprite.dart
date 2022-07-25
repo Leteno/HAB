@@ -12,8 +12,10 @@ abstract class Sprite {
   Map<String, Animation> animationMap = {};
   Sprite(this.widgetData, this.collisionWorld);
 
-  double movingSpeed = 50;
+  double movingSpeed = 20;
+  double distancePerMove = 10;
   double jumpSpeed = 100;
+  double distancePerJump = 200;
 
   Widget build();
   // updateLogic will call first, then it is updateUIIfNeeded
@@ -62,7 +64,9 @@ abstract class Sprite {
 
   void movingLeft() {
     double lastOffsetX = 0;
-    DoubleAnimation movingAnimation = DoubleAnimation(1000, 0, movingSpeed);
+    int duration = (distancePerMove / movingSpeed * 1000).ceil();
+    DoubleAnimation movingAnimation =
+        DoubleAnimation(duration, 0, distancePerMove);
     movingAnimation.onValueChange = (offsetX) {
       widgetData.posX -= (offsetX - lastOffsetX);
       if (collisionWorld.hasCollision(this)) {
@@ -79,13 +83,13 @@ abstract class Sprite {
     AnimationData data =
         widgetData.tileData.getAnimationData(SpriteState.WALKING);
     IntAnimation spriteAnimation =
-        data.buildAnimation(1000, widgetData.tileData, () {
+        data.buildAnimation(duration, widgetData.tileData, () {
       widgetData.update();
     });
 
-    movingAnimation.onStop = () {
-      spriteAnimation.forceStop();
-    };
+    // movingAnimation.onStop = () {
+    //   spriteAnimation.forceStop();
+    // };
 
     animationMap['moving'] = movingAnimation;
     if (!animationMap.containsKey('sprite')) {
@@ -95,7 +99,9 @@ abstract class Sprite {
 
   void movingRight() {
     double lastOffsetX = 0;
-    DoubleAnimation movingAnimation = DoubleAnimation(1000, 0, movingSpeed);
+    int duration = (distancePerMove / movingSpeed * 1000).ceil();
+    DoubleAnimation movingAnimation =
+        DoubleAnimation(duration, 0, distancePerMove);
     movingAnimation.onValueChange = (offsetX) {
       widgetData.posX += (offsetX - lastOffsetX);
       if (collisionWorld.hasCollision(this)) {
@@ -112,13 +118,13 @@ abstract class Sprite {
     AnimationData data =
         widgetData.tileData.getAnimationData(SpriteState.WALKING);
     IntAnimation spriteAnimation =
-        data.buildAnimation(1000, widgetData.tileData, () {
+        data.buildAnimation(duration, widgetData.tileData, () {
       widgetData.update();
     });
 
-    movingAnimation.onStop = () {
-      spriteAnimation.forceStop();
-    };
+    // movingAnimation.onStop = () {
+    //   spriteAnimation.forceStop();
+    // };
 
     animationMap['moving'] = movingAnimation;
     if (!animationMap.containsKey('sprite')) {
@@ -127,14 +133,15 @@ abstract class Sprite {
   }
 
   void jumping() {
+    int duration = (distancePerJump / jumpSpeed * 1000).ceil();
     AnimationData data = widgetData.tileData.getAnimationData(SpriteState.JUMP);
     IntAnimation jumpGraphicAnimation =
-        data.buildAnimation(2000, widgetData.tileData, () {
+        data.buildAnimation(duration, widgetData.tileData, () {
       widgetData.update();
     });
 
     DoubleAnimation movingAnimation =
-        DoubleAnimation(2000, 0, jumpSpeed * 2 /* 2s */);
+        DoubleAnimation(duration, 0, distancePerJump);
     double lastOffsetY = 0;
     movingAnimation.onValueChange = (offsetY) {
       widgetData.posY -= (offsetY - lastOffsetY);
@@ -142,6 +149,7 @@ abstract class Sprite {
         widgetData.posY += (offsetY - lastOffsetY);
         widgetData.update();
         movingAnimation.forceStop();
+        jumpGraphicAnimation.forceStop();
         return;
       }
       widgetData.update();
@@ -150,8 +158,8 @@ abstract class Sprite {
     movingAnimation.onStop = () {
       widgetData.jumpFlag = true;
     };
-    animationMap['sprite'] = movingAnimation;
-    animationMap['jumping'] = jumpGraphicAnimation;
+    animationMap['jumping'] = movingAnimation;
+    animationMap['sprite'] = jumpGraphicAnimation;
     if (animationMap.containsKey('moving')) {
       animationMap['moving']?.forceStop();
     }

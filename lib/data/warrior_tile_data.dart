@@ -18,7 +18,8 @@ class WarriorTileData extends GameTileData {
       ..add(SpriteIndex(2, 0))
       ..add(SpriteIndex(3, 0))
       ..add(SpriteIndex(4, 0))
-      ..add(SpriteIndex(5, 0));
+      ..add(SpriteIndex(5, 0))
+      ..add(SpriteIndex(1, 0));
 
     state2Animation[SpriteState.WALKING] = walkingAnimation;
 
