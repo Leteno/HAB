@@ -23,8 +23,11 @@ abstract class Animation<T extends num> {
     return left == 0;
   }
 
-  void forceStop() {
+  void forceStop({bool clearNext = false}) {
     left = 0;
+    if (clearNext) {
+      _nextAnimation = null;
+    }
     performOnStop();
   }
 

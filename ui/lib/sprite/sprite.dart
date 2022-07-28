@@ -63,8 +63,18 @@ abstract class Sprite {
   }
 
   void movingLeft() {
+    Animation? previousMovingLeft = animationMap['movingLeft'];
+
     double lastOffsetX = 0;
     int duration = (distancePerMove / movingSpeed * 1000).ceil();
+
+    if (previousMovingLeft != null) {
+      if (previousMovingLeft.duration > duration / 3) {
+        // We only deal with the left press event in very last moment.
+        return;
+      }
+    }
+
     DoubleAnimation movingAnimation =
         DoubleAnimation(duration, 0, distancePerMove);
     movingAnimation.onValueChange = (offsetX) {
@@ -87,19 +97,33 @@ abstract class Sprite {
       widgetData.update();
     });
 
-    // movingAnimation.onStop = () {
-    //   spriteAnimation.forceStop();
-    // };
-
-    animationMap['moving'] = movingAnimation;
-    if (!animationMap.containsKey('sprite')) {
-      animationMap['sprite'] = spriteAnimation;
+    if (previousMovingLeft != null) {
+      previousMovingLeft.next(movingAnimation);
+    } else {
+      animationMap['movingLeft'] = movingAnimation;
+    }
+    if (!animationMap.containsKey('jumping')) {
+      if (previousMovingLeft != null) {
+        animationMap['sprite']?.next(spriteAnimation);
+      } else {
+        animationMap['sprite'] = spriteAnimation;
+      }
     }
   }
 
   void movingRight() {
+    Animation? previousMovingRight = animationMap['movingRight'];
+
     double lastOffsetX = 0;
     int duration = (distancePerMove / movingSpeed * 1000).ceil();
+
+    if (previousMovingRight != null) {
+      if (previousMovingRight.duration > duration / 3) {
+        // We only deal with the left press event in very last moment.
+        return;
+      }
+    }
+
     DoubleAnimation movingAnimation =
         DoubleAnimation(duration, 0, distancePerMove);
     movingAnimation.onValueChange = (offsetX) {
@@ -126,9 +150,17 @@ abstract class Sprite {
     //   spriteAnimation.forceStop();
     // };
 
-    animationMap['moving'] = movingAnimation;
-    if (!animationMap.containsKey('sprite')) {
-      animationMap['sprite'] = spriteAnimation;
+    if (previousMovingRight != null) {
+      previousMovingRight.next(movingAnimation);
+    } else {
+      animationMap['movingRight'] = movingAnimation;
+    }
+    if (!animationMap.containsKey('jumping')) {
+      if (previousMovingRight != null) {
+        animationMap['sprite']?.next(spriteAnimation);
+      } else {
+        animationMap['sprite'] = spriteAnimation;
+      }
     }
   }
 
@@ -160,9 +192,6 @@ abstract class Sprite {
     };
     animationMap['jumping'] = movingAnimation;
     animationMap['sprite'] = jumpGraphicAnimation;
-    if (animationMap.containsKey('moving')) {
-      animationMap['moving']?.forceStop();
-    }
   }
 
   void onIdle() {}
