@@ -151,5 +151,9 @@ void main() {
 class SimpleGameSpriteWidgetData extends GameSpriteWidgetData {
   SimpleGameSpriteWidgetData(posX, posY, widgetWidth, widgetHeight)
       : super(GameTileData('', 20, 20, 20, 20, 20, 20), posX * 1.0, posY * 1.0,
-            widgetWidth * 1.0, widgetHeight * 1.0);
+            widgetWidth * 1.0, widgetHeight * 1.0) {
+    AnimationData failAnimation = AnimationData();
+    failAnimation.animationIndexes.add(SpriteIndex(3, 2));
+    tileData.state2Animation[SpriteState.FAILING] = failAnimation;
+  }
 }

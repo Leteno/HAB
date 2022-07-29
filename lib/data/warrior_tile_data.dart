@@ -25,7 +25,10 @@ class WarriorTileData extends GameTileData {
 
     AnimationData jumpAnimation = AnimationData();
     jumpAnimation.animationIndexes.add(SpriteIndex(1, 2));
-
     state2Animation[SpriteState.JUMP] = jumpAnimation;
+
+    AnimationData failAnimation = AnimationData();
+    failAnimation.animationIndexes.add(SpriteIndex(3, 2));
+    state2Animation[SpriteState.FAILING] = failAnimation;
   }
 }

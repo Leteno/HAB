@@ -8,7 +8,7 @@ class GameSpriteWidgetData {
   double widgetWidth;
   double widgetHeight;
   GameTileData tileData;
-  late State _state;
+  late State? _state;
 
   bool jumpFlag = true;
 
@@ -19,9 +19,13 @@ class GameSpriteWidgetData {
     _state = state;
   }
 
+  fakeStateForTest() {
+    _state = null;
+  }
+
   update() {
     if (_state != null) {
-      _state.setState(() {});
+      _state!.setState(() {});
     }
   }
 

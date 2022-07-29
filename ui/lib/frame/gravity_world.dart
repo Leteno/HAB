@@ -1,11 +1,14 @@
 import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
 import 'package:ui/frame/game_map.dart';
+import 'package:ui/sprite/sprite.dart';
+
+import '../data/game_tile_data.dart';
 
 class GravityWorld {
   late GameMap _map;
   List<Animation> animations = [];
-  List<GameSpriteWidgetData> registeredWidgetDatas = [];
+  List<Sprite> registereSprites = [];
 
   double gravitySpeed = 100;
 
@@ -13,26 +16,35 @@ class GravityWorld {
     _map = map;
   }
 
-  void registerListener(GameSpriteWidgetData widgetData) {
-    registeredWidgetDatas.add(widgetData);
+  void registerListener(Sprite sprite) {
+    registereSprites.add(sprite);
   }
 
-  void _applyGravity(GameSpriteWidgetData widgetData) {
+  void _applyGravity(Sprite sprite) {
+    GameSpriteWidgetData widgetData = sprite.widgetData;
     double distance = _map.fallingDistance(widgetData);
     if (distance <= 0) return;
     double currentY = widgetData.posY;
-    DoubleAnimation animation =
-        DoubleAnimation((distance * 1000 / gravitySpeed).ceil(), 0, distance);
+    int duration = (distance * 1000 / gravitySpeed).ceil();
+    DoubleAnimation animation = DoubleAnimation(duration, 0, distance);
     animation.onValueChange = (deltaDistance) {
       widgetData.posY = currentY + deltaDistance;
     };
-    animations.add(animation);
+    AnimationData data =
+        widgetData.tileData.getAnimationData(SpriteState.FAILING);
+    IntAnimation spriteAnimation =
+        data.buildAnimation(duration, widgetData.tileData, () {
+      widgetData.update();
+    });
+    sprite.animationMap['failling'] = animation;
+    sprite.animationMap['sprite'] = spriteAnimation;
   }
 
   void animate(int elapse) {
-    for (GameSpriteWidgetData widgetData in registeredWidgetDatas) {
+    for (Sprite sprite in registereSprites) {
+      GameSpriteWidgetData widgetData = sprite.widgetData;
       if (widgetData.jumpFlag) {
-        _applyGravity(widgetData);
+        _applyGravity(sprite);
         widgetData.jumpFlag = false;
       }
     }

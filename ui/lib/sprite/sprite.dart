@@ -102,7 +102,8 @@ abstract class Sprite {
     } else {
       animationMap['movingLeft'] = movingAnimation;
     }
-    if (!animationMap.containsKey('jumping')) {
+    if (!animationMap.containsKey('jumping') ||
+        !animationMap.containsKey('failling')) {
       if (previousMovingLeft != null) {
         animationMap['sprite']?.next(spriteAnimation);
       } else {
@@ -155,7 +156,8 @@ abstract class Sprite {
     } else {
       animationMap['movingRight'] = movingAnimation;
     }
-    if (!animationMap.containsKey('jumping')) {
+    if (!animationMap.containsKey('jumping') ||
+        !animationMap.containsKey('failling')) {
       if (previousMovingRight != null) {
         animationMap['sprite']?.next(spriteAnimation);
       } else {
@@ -165,6 +167,10 @@ abstract class Sprite {
   }
 
   void jumping() {
+    if (animationMap.containsKey('failling')) {
+      return;
+    }
+
     int duration = (distancePerJump / jumpSpeed * 1000).ceil();
     AnimationData data = widgetData.tileData.getAnimationData(SpriteState.JUMP);
     IntAnimation jumpGraphicAnimation =

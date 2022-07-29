@@ -44,6 +44,7 @@ class SpriteState {
   static String IDLE = "IDLE";
   static String WALKING = "WALKING";
   static String JUMP = "JUMP";
+  static String FAILING = "FAILING";
 }
 
 typedef UpdateFunc = void Function();
