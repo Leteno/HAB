@@ -102,7 +102,7 @@ abstract class Sprite {
     } else {
       animationMap['movingLeft'] = movingAnimation;
     }
-    if (!animationMap.containsKey('jumping') ||
+    if (!animationMap.containsKey('jumping') &&
         !animationMap.containsKey('failling')) {
       if (previousMovingLeft != null) {
         animationMap['sprite']?.next(spriteAnimation);
@@ -156,7 +156,7 @@ abstract class Sprite {
     } else {
       animationMap['movingRight'] = movingAnimation;
     }
-    if (!animationMap.containsKey('jumping') ||
+    if (!animationMap.containsKey('jumping') &&
         !animationMap.containsKey('failling')) {
       if (previousMovingRight != null) {
         animationMap['sprite']?.next(spriteAnimation);
