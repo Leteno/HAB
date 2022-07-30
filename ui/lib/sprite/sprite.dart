@@ -194,8 +194,9 @@ abstract class Sprite {
       lastOffsetY = offsetY;
     };
     movingAnimation.onStop = () {
-      widgetData.jumpFlag = true;
+      widgetData.jumpFlag = false;
     };
+    widgetData.jumpFlag = true;
     animationMap['jumping'] = movingAnimation;
     animationMap['sprite'] = jumpGraphicAnimation;
   }

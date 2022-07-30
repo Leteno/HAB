@@ -10,7 +10,7 @@ class GameSpriteWidgetData {
   GameTileData tileData;
   late State? _state;
 
-  bool jumpFlag = true;
+  bool jumpFlag = false;
   bool visible = true;
 
   GameSpriteWidgetData(

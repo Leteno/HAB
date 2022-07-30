@@ -43,9 +43,8 @@ class GravityWorld {
   void animate(int elapse) {
     for (Sprite sprite in registereSprites) {
       GameSpriteWidgetData widgetData = sprite.widgetData;
-      if (widgetData.jumpFlag) {
+      if (!widgetData.jumpFlag) {
         _applyGravity(sprite);
-        widgetData.jumpFlag = false;
       }
     }
     List<Animation> newAnimations = [];
