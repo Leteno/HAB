@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart' hide Animation;
 import 'package:hab_repo/game/example_scene.dart';
+import 'package:ui/frame/fps.dart';
 import 'package:ui/frame/scene.dart';
 import 'package:ui/keyboard/game_event.dart';
 
@@ -38,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   late final Timer _timer;
   late Scene _currentScene;
+  Fps fps = Fps();
   @override
   void initState() {
     super.initState();
@@ -51,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage>
 
       // Animataion
       _currentScene.animate(elapse);
+      fps.onFrameUpdated();
     });
   }
 
@@ -72,6 +75,10 @@ class _MyHomePageState extends State<MyHomePage>
         onKeyEvent: onKey,
         child: Stack(children: [
           _currentScene.build(context),
+          Positioned(
+            left: 200,
+            child: fps.build(),
+          ),
         ]));
   }
 }
