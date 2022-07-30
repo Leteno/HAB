@@ -201,4 +201,6 @@ abstract class Sprite {
   }
 
   void onIdle() {}
+
+  void onCollissionWith(Sprite sprite) {}
 }

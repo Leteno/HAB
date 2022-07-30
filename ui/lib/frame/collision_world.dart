@@ -9,6 +9,7 @@ class CollisionWorld {
   late GameMap _map;
   double extraOffsetLeft = 0;
   double extraOffsetTop = 0;
+  List<Sprite> observers = [];
 
   bindGameMap(GameMap map) {
     _map = map;
@@ -16,6 +17,34 @@ class CollisionWorld {
 
   bool hasCollision(Sprite sprite) {
     return _map.hasCollision(sprite.widgetData);
+  }
+
+  void addObserver(Sprite sprite) {
+    if (observers.contains(sprite)) return;
+    observers.add(sprite);
+    assert(observers.length < 32);
+  }
+
+  void removeObserver(Sprite sprite) {
+    observers.remove(sprite);
+  }
+
+  void detectCollisionForObservers() {
+    for (int i = 0; i < observers.length; i++) {
+      for (int j = i + 1; j < observers.length; j++) {
+        if (_detectCollisionForObjects(observers[i], observers[j])) {
+          observers[i].onCollissionWith(observers[j]);
+          observers[j].onCollissionWith(observers[i]);
+          continue;
+        }
+      }
+    }
+  }
+
+  bool _detectCollisionForObjects(Sprite obj1, Sprite obj2) {
+    Rect rect1 = obj1.getCenteredCollisionArea();
+    Rect rect2 = obj2.getCenteredCollisionArea();
+    return rect1.overlaps(rect2);
   }
 
   // Deprecated: use hasCollision instead.

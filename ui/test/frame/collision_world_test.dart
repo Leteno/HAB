@@ -68,6 +68,66 @@ void main() {
     expect(result.correction.dx, -13);
     expect(result.correction.dy, -14);
   });
+
+  test('Collision Observer Detection Few objects', () {
+    GameMap map = GameMap([0, 0, 0, 0, 0, 0, 0, 0, 0], 3, 3, 20, 20);
+    CollisionWorld world = CollisionWorld();
+    world.bindGameMap(map);
+
+    TestSprite mouse = TestSprite(0, 0, 20, 20);
+    TestSprite cat = TestSprite(25, 25, 30, 30);
+    world.addObserver(mouse);
+    world.addObserver(cat);
+
+    world.detectCollisionForObservers();
+
+    expect(mouse.collisionSprite, null);
+    expect(cat.collisionSprite, null);
+
+    mouse.widgetData.posX = 10;
+    mouse.widgetData.posY = 10;
+    world.detectCollisionForObservers();
+    expect(mouse.collisionSprite, cat);
+    expect(cat.collisionSprite, mouse);
+  });
+
+  test('Collision Observer Detection Many objects', () {
+    GameMap map = GameMap([0, 0, 0, 0, 0, 0, 0, 0, 0], 3, 3, 20, 20);
+    CollisionWorld world = CollisionWorld();
+    world.bindGameMap(map);
+
+    TestSprite mouse = TestSprite(0, 0, 20, 20);
+    TestSprite cat = TestSprite(25, 25, 30, 30);
+    TestSprite nobody1 = TestSprite(0, 30, 1, 1);
+    TestSprite nobody2 = TestSprite(1, 30, 1, 1);
+    TestSprite nobody3 = TestSprite(2, 30, 1, 1);
+    TestSprite nobody4 = TestSprite(3, 30, 1, 1);
+    world.addObserver(mouse);
+    world.addObserver(cat);
+    world.addObserver(nobody1);
+    world.addObserver(nobody2);
+    world.addObserver(nobody3);
+    world.addObserver(nobody4);
+
+    world.detectCollisionForObservers();
+
+    expect(mouse.collisionSprite, null);
+    expect(cat.collisionSprite, null);
+    expect(nobody1.collisionSprite, null);
+    expect(nobody2.collisionSprite, null);
+    expect(nobody3.collisionSprite, null);
+    expect(nobody4.collisionSprite, null);
+
+    mouse.widgetData.posX = 10;
+    mouse.widgetData.posY = 10;
+    world.detectCollisionForObservers();
+    expect(mouse.collisionSprite, cat);
+    expect(cat.collisionSprite, mouse);
+    expect(nobody1.collisionSprite, null);
+    expect(nobody2.collisionSprite, null);
+    expect(nobody3.collisionSprite, null);
+    expect(nobody4.collisionSprite, null);
+  });
 }
 
 class TestSprite extends Sprite {
@@ -76,6 +136,7 @@ class TestSprite extends Sprite {
             GameSpriteWidgetData(GameTileData('', 1, 1, 1, 1, 1, 1), posX * 1.0,
                 posY * 1.0, widgetWidth * 1.0, widgetHeight * 1.0),
             CollisionWorld());
+  Sprite? collisionSprite = null;
   @override
   Widget build() {
     // TODO: implement build
@@ -86,5 +147,9 @@ class TestSprite extends Sprite {
   Rect getCollisionArea() {
     return Rect.fromLTWH(widgetData.posX, widgetData.posY,
         widgetData.widgetWidth, widgetData.widgetHeight);
+  }
+
+  void onCollissionWith(Sprite sprite) {
+    collisionSprite = sprite;
   }
 }
