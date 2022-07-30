@@ -14,7 +14,9 @@ class Warrior extends Sprite {
       : super(
             GameSpriteWidgetData(WarriorTileData(), posX * 1.0, posY * 1.0,
                 widgetWidth * 1.0, widgetHeight * 1.0),
-            collisionWorld);
+            collisionWorld) {
+    movingSpeed = 50;
+  }
 
   @override
   Widget build() {
@@ -39,6 +41,26 @@ class Warrior extends Sprite {
 
   @override
   void onCollissionWith(Sprite sprite) {
-    print("got collision with ${sprite}");
+    setBlink();
+  }
+
+  void setBlink() {
+    if (animationMap.containsKey('blink')) {
+      return;
+    }
+    IntAnimation animation = IntAnimation(3000, 1, 10);
+    bool visible = false;
+    int lastNumber = 0;
+    animation.onValueChange = (value) {
+      if (lastNumber == value) return;
+      lastNumber = value;
+      widgetData.visible = visible;
+      visible = !visible;
+      widgetData.update();
+    };
+    animation.onStop = () {
+      widgetData.visible = true;
+    };
+    animationMap['blink'] = animation;
   }
 }

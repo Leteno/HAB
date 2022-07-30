@@ -10,17 +10,19 @@ import 'package:ui/ui.dart';
 class SpriteRawTile extends StatelessWidget {
   final ui.Image image;
   GameTileData tileData;
+  bool visible;
 
-  SpriteRawTile({Key? key, required this.image, required this.tileData})
+  SpriteRawTile(
+      {Key? key,
+      required this.image,
+      required this.tileData,
+      required this.visible})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _SpritePainter(
-        image: image,
-        tileData: tileData,
-      ),
+      painter: _SpritePainter(image, tileData, visible),
     );
   }
 }
@@ -28,11 +30,9 @@ class SpriteRawTile extends StatelessWidget {
 class _SpritePainter extends CustomPainter {
   ui.Image image;
   GameTileData tileData;
+  bool visible;
 
-  _SpritePainter({
-    required this.image,
-    required this.tileData,
-  });
+  _SpritePainter(this.image, this.tileData, this.visible);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -67,7 +67,9 @@ class _SpritePainter extends CustomPainter {
       canvas.scale(-1, 1);
       canvas.translate(-size.width, 0);
     }
-    canvas.drawImageRect(image, src, dst, Paint());
+    if (visible) {
+      canvas.drawImageRect(image, src, dst, Paint());
+    }
     canvas.restore();
   }
 

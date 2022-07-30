@@ -41,7 +41,9 @@ class _SpriteTileState extends State<SpriteTile> {
               width: widget.widgetData.widgetWidth,
               height: widget.widgetData.widgetHeight,
               child: SpriteRawTile(
-                  image: image!, tileData: widget.widgetData.tileData)));
+                  image: image!,
+                  tileData: widget.widgetData.tileData,
+                  visible: widget.widgetData.visible)));
     }
     return const Text('Image loading');
   }

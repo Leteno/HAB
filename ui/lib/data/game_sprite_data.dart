@@ -11,6 +11,7 @@ class GameSpriteWidgetData {
   late State? _state;
 
   bool jumpFlag = true;
+  bool visible = true;
 
   GameSpriteWidgetData(
       this.tileData, this.posX, this.posY, this.widgetWidth, this.widgetHeight);
