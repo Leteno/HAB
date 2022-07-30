@@ -27,6 +27,9 @@ class ExampleScene extends Scene {
     addSprite(rat);
     gravityWorld.registerListener(rat);
 
+    collisionWorld.addObserver(warrior);
+    collisionWorld.addObserver(rat);
+
     WonderingRegion region =
         _map.getWonderingRegion(rat.widgetData, standGround: true);
     print(

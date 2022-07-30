@@ -40,6 +40,7 @@ abstract class Scene {
       sprite.animate(elapse);
     }
     gravityWorld.animate(elapse);
+    collisionWorld.detectCollisionForObservers();
   }
 
   GameMap getGameMap();

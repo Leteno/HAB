@@ -36,4 +36,9 @@ class Warrior extends Sprite {
     });
     animationMap['idle'] = animation;
   }
+
+  @override
+  void onCollissionWith(Sprite sprite) {
+    print("got collision with ${sprite}");
+  }
 }
