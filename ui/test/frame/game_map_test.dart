@@ -176,6 +176,30 @@ void main() {
     expect(map.hasCollision(SimpleGameSpriteWidgetData(21, 20, 20, 20)), true);
     expect(map.hasCollision(SimpleGameSpriteWidgetData(20, 21, 20, 20)), true);
   });
+
+  test('getCollisionType', () {
+    GameMap map = GameMap([0, 2, 0, 1, 3, 0, 1, 1, 0], 3, 3, 20, 20);
+    map.getBlockTypeFunc = (blockValue) {
+      switch (blockValue) {
+        case 0:
+          return GameGridType.EMPTY;
+        case 2:
+          return GameGridType.BUSH;
+        case 1:
+        default:
+          return GameGridType.BLOCK;
+      }
+    };
+
+    expect(map.getCollisionType(SimpleGameSpriteWidgetData(0, 0, 10, 10)),
+        [GameGridType.EMPTY]);
+    expect(map.getCollisionType(SimpleGameSpriteWidgetData(20, 10, 20, 20)),
+        [GameGridType.BUSH, GameGridType.BLOCK]);
+    expect(map.getCollisionType(SimpleGameSpriteWidgetData(10, 10, 20, 20)),
+        [GameGridType.EMPTY, GameGridType.BUSH, GameGridType.BLOCK]);
+    expect(map.getCollisionType(SimpleGameSpriteWidgetData(30, 10, 20, 10)),
+        [GameGridType.BUSH, GameGridType.EMPTY]);
+  });
 }
 
 class SimpleGameSpriteWidgetData extends GameSpriteWidgetData {
