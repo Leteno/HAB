@@ -91,13 +91,17 @@ class _SpritePainter extends CustomPainter {
               tileData.imageSpriteIndexY * tileData.tileHeight,
           tileData.tileWidth,
           tileData.tileHeight);
+      // We want to show the little foot of the character :)
+      double trimSize = 12;
       Rect dst = Rect.fromLTWH(
-        size.width * (1.0 - tileData.tileActualWidth / tileData.tileWidth) / 2,
+        size.width * (1.0 - tileData.tileActualWidth / tileData.tileWidth) / 2 +
+            trimSize / 2,
         size.height *
             (1.0 - tileData.tileActualHeight / tileData.tileHeight) /
             2,
-        size.width * tileData.tileActualWidth / tileData.tileWidth,
-        size.height * tileData.tileActualHeight / tileData.tileHeight,
+        size.width * tileData.tileActualWidth / tileData.tileWidth - trimSize,
+        size.height * tileData.tileActualHeight / tileData.tileHeight -
+            trimSize,
       );
       canvas.drawImageRect(maskTileData!.image!, src, dst, Paint());
       canvas.restore();

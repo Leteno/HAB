@@ -20,13 +20,13 @@ class ExampleScene extends Scene {
     collisionWorld.bindGameMap(_map);
     gravityWorld.bindGameMap(_map);
     warrior = Warrior(collisionWorld, 80, 480, 80, 80);
-    addSprite(warrior);
-    gravityWorld.registerListener(warrior);
 
     rat = Monster(collisionWorld, 80, 180, 80, 80);
-    addSprite(rat);
-    gravityWorld.registerListener(rat);
 
+    addSprite(warrior);
+    addSprite(rat);
+    gravityWorld.registerListener(warrior);
+    gravityWorld.registerListener(rat);
     collisionWorld.addObserver(warrior);
     collisionWorld.addObserver(rat);
 
@@ -95,8 +95,8 @@ class ExampleScene extends Scene {
     return Stack(
       children: [
         mapSprite.build(),
-        rat.build(),
         warrior.build(),
+        rat.build(),
       ],
     );
   }

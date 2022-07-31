@@ -6,4 +6,4 @@ class Calculator {
   int addOne(int value) => value + 1;
 }
 
-bool isDebug = true;
+bool isDebug = false;
