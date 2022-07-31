@@ -81,6 +81,10 @@ class ExampleScene extends Scene {
       warrior.movingLeft();
     } else if (event == GameEventType.RIGHT) {
       warrior.movingRight();
+    } else if (event == GameEventType.UP) {
+      warrior.showMask(true);
+    } else if (event == GameEventType.DOWN) {
+      warrior.showMask(false);
     } else if (event == GameEventType.JUMP) {
       warrior.jumping();
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ui/data/game_tile_data.dart';
+import 'package:ui/data/sprite_mask_tile_data.dart';
 import 'package:ui/sprite/sprite_tile.dart';
 
 class GameSpriteWidgetData {
@@ -8,7 +9,8 @@ class GameSpriteWidgetData {
   double widgetWidth;
   double widgetHeight;
   GameTileData tileData;
-  late State? _state;
+  SpriteMaskTileData? maskTileData;
+  State? _state;
 
   bool jumpFlag = false;
   bool visible = true;

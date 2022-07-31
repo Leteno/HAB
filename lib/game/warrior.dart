@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:hab_repo/data/warrior_mask_tile_data.dart';
 import 'package:hab_repo/data/warrior_tile_data.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
@@ -16,6 +17,10 @@ class Warrior extends Sprite {
                 widgetWidth * 1.0, widgetHeight * 1.0),
             collisionWorld) {
     movingSpeed = 50;
+    widgetData.maskTileData = WarriorMaskTileData();
+    widgetData.maskTileData?.loadImage(() {
+      widgetData.update();
+    });
   }
 
   @override
@@ -62,5 +67,10 @@ class Warrior extends Sprite {
       widgetData.visible = true;
     };
     animationMap['blink'] = animation;
+  }
+
+  void showMask(bool show) {
+    widgetData.maskTileData!.shown = show;
+    widgetData.update();
   }
 }
