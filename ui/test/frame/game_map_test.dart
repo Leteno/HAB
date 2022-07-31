@@ -146,6 +146,36 @@ void main() {
     expect(map.hasCollision(SimpleGameSpriteWidgetData(21, 20, 20, 20)), false);
     expect(map.hasCollision(SimpleGameSpriteWidgetData(20, 21, 20, 20)), true);
   });
+
+  test('hasCollision - with GameGridTypeFunction return EMPTY', () {
+    GameMap map = GameMap([0, 0, 0, 1, 0, 0, 1, 1, 0], 3, 3, 20, 20);
+    // All the grid are not block, even value 1;
+    map.getBlockTypeFunc = (blockValue) => GameGridType.EMPTY;
+
+    // We expect no collision in this map.
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(0, 0, 10, 10)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(0, 0, 20, 20)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(1, 0, 20, 20)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(0, 1, 20, 20)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(20, 20, 20, 20)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(21, 20, 20, 20)), false);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(20, 21, 20, 20)), false);
+  });
+
+  test('hasCollision - with GameGridTypeFunction return BLOCK', () {
+    GameMap map = GameMap([0, 0, 0, 1, 0, 0, 1, 1, 0], 3, 3, 20, 20);
+    // All the grid are block, even value 0;
+    map.getBlockTypeFunc = (blockValue) => GameGridType.BLOCK;
+
+    // We expect no collision in this map.
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(0, 0, 10, 10)), true);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(0, 0, 20, 20)), true);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(1, 0, 20, 20)), true);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(0, 1, 20, 20)), true);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(20, 20, 20, 20)), true);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(21, 20, 20, 20)), true);
+    expect(map.hasCollision(SimpleGameSpriteWidgetData(20, 21, 20, 20)), true);
+  });
 }
 
 class SimpleGameSpriteWidgetData extends GameSpriteWidgetData {
