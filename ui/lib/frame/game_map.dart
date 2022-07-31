@@ -8,6 +8,10 @@ import 'package:ui/sprite/sprite.dart';
 
 import '../data/game_sprite_data.dart';
 
+enum GameGridType { BLOCK, EMPTY }
+
+typedef GetGridTypeFunction = GameGridType Function(int blockValue);
+
 class GameMap {
   List<int> mapData;
   int rowCount;
@@ -16,6 +20,7 @@ class GameMap {
   double gridSizeY;
   late List<List<int>> virtualMapData;
   late int vRowCount, vColumnCount;
+  late GetGridTypeFunction getBlockTypeFunc;
   GameMap(this.mapData, this.columnCount, this.rowCount, this.gridSizeX,
       this.gridSizeY) {
     // virtualMap will have an extra line in left/top/right/bottom four direction
@@ -40,6 +45,18 @@ class GameMap {
       virtualMapData.add(lineData);
     }
     virtualMapData.add(lastLine);
+
+    getBlockTypeFunc = defaultGetBlockType;
+  }
+
+  GameGridType defaultGetBlockType(int blockValue) {
+    return blockValue != 0 ? GameGridType.BLOCK : GameGridType.EMPTY;
+  }
+
+  // Whether this block is occupied and nobody could pass it,
+  // according to its value.
+  bool isGridOccupied(int gridValue) {
+    return getBlockTypeFunc(gridValue) == GameGridType.BLOCK;
   }
 
   bool isOccupy(int x, int y) {
@@ -57,28 +74,28 @@ class GameMap {
 
     if (direction == Direction.LEFT) {
       for (int i = x - 1; i >= 0; i--) {
-        if (mapData[i + y * columnCount] > 0) {
+        if (isGridOccupied(mapData[i + y * columnCount])) {
           return i - x;
         }
       }
       return -x;
     } else if (direction == Direction.RIGHT) {
       for (int i = x + 1; i < columnCount; i++) {
-        if (mapData[i + y * columnCount] > 0) {
+        if (isGridOccupied(mapData[i + y * columnCount])) {
           return i - x;
         }
       }
       return columnCount - 1 - x;
     } else if (direction == Direction.UP) {
       for (int i = y - 1; i >= 0; i--) {
-        if (mapData[x + i * columnCount] > 0) {
+        if (isGridOccupied(mapData[x + i * columnCount])) {
           return i - y;
         }
       }
       return -y;
     } else if (direction == Direction.DOWN) {
       for (int i = y + 1; i < rowCount; i++) {
-        if (mapData[x + i * columnCount] > 0) {
+        if (isGridOccupied(mapData[x + i * columnCount])) {
           return i - y;
         }
       }
@@ -125,10 +142,10 @@ class GameMap {
     for (int y = vStartYIndex; y <= vEndYIndex; y++) {
       int gridCount = 0;
       for (int x = vStartXIndex - 1; x >= 0; x--) {
-        if (virtualMapData[y][x] != 0) {
+        if (isGridOccupied(virtualMapData[y][x])) {
           break;
         }
-        if (standGround && virtualMapData[y + 1][x] == 0) {
+        if (standGround && !isGridOccupied(virtualMapData[y + 1][x])) {
           // break if we need standGround and the block bellow is empty
           break;
         }
@@ -146,10 +163,10 @@ class GameMap {
     for (int y = vStartYIndex; y <= vEndYIndex; y++) {
       int gridCount = 0;
       for (int x = vEndXIndex + 1; x < vColumnCount; x++) {
-        if (virtualMapData[y][x] != 0) {
+        if (isGridOccupied(virtualMapData[y][x])) {
           break;
         }
-        if (standGround && virtualMapData[y + 1][x] == 0) {
+        if (standGround && !isGridOccupied(virtualMapData[y + 1][x])) {
           // break if we need standGround and the block bellow is empty
           break;
         }
@@ -196,7 +213,7 @@ class GameMap {
     for (int x = vStartXIndex; x <= vEndXIndex; x++) {
       int gridCount = 0;
       for (int y = vEndYIndex + 1; y < vRowCount; y++) {
-        if (virtualMapData[y][x] != 0) {
+        if (isGridOccupied(virtualMapData[y][x])) {
           break;
         }
         gridCount++;
@@ -236,7 +253,7 @@ class GameMap {
 
     for (int y = vStartYIndex; y <= vEndYIndex; y++) {
       for (int x = vStartXIndex; x <= vEndXIndex; x++) {
-        if (virtualMapData[y][x] != 0) {
+        if (isGridOccupied(virtualMapData[y][x])) {
           return true;
         }
       }
