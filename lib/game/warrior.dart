@@ -53,6 +53,9 @@ class Warrior extends Sprite {
     if (animationMap.containsKey('blink')) {
       return;
     }
+    if (widgetData.maskTileData != null && widgetData.maskTileData!.shown) {
+      return;
+    }
     IntAnimation animation = IntAnimation(3000, 1, 10);
     bool visible = false;
     int lastNumber = 0;
