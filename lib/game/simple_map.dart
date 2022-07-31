@@ -20,6 +20,7 @@ class SimpleMap {
         TilePosition.initMap(_positions.toList(), 16, 16, 384, 544, 8, 8);
 
     _gameMap = GameMap(_positions.toList(), 8, 8, gridSizeX, gridSizeY);
+    _gameMap.getBlockTypeFunc = _getGridTypeFunction;
   }
 
   @override
@@ -36,6 +37,13 @@ class SimpleMap {
     return Rect.fromLTWH(_MapController.posX, _MapController.posY,
         _MapController.destWidth, _MapController.destHeight);
   }
+}
+
+GameGridType _getGridTypeFunction(int blockValue) {
+  if (blockValue == 0 || blockValue == 468 || blockValue == 465) {
+    return GameGridType.EMPTY;
+  }
+  return GameGridType.BLOCK;
 }
 
 List<int> _positions = [
@@ -90,7 +98,7 @@ List<int> _positions = [
   0,
   0,
   0,
-  0,
+  465,
   0,
   349,
   0,
