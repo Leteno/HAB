@@ -11,8 +11,7 @@ class SimpleMap {
   final double gridSizeX;
   final double gridSizeY;
   late final GameMap _gameMap;
-  SimpleMap(
-      posX, posY, widgetWidth, widgetHeight, this.gridSizeX, this.gridSizeY) {
+  SimpleMap(posX, posY, this.gridSizeX, this.gridSizeY) {
     _MapController = BulkSpriteController(16, 16, gridSizeX, gridSizeY);
     _MapController.posX = posX * 1.0;
     _MapController.posY = posY * 1.0;
@@ -40,8 +39,10 @@ class SimpleMap {
 }
 
 GameGridType _getGridTypeFunction(int blockValue) {
-  if (blockValue == 0 || blockValue == 468 || blockValue == 465) {
+  if (blockValue == 0) {
     return GameGridType.EMPTY;
+  } else if (blockValue == 468 || blockValue == 465) {
+    return GameGridType.BUSH;
   }
   return GameGridType.BLOCK;
 }

@@ -15,11 +15,11 @@ class ExampleScene extends Scene {
   late Monster rat;
 
   ExampleScene() {
-    mapSprite = SimpleMap(0, 0, 0, 0, 80, 80);
+    mapSprite = SimpleMap(0, 0, 80, 80);
     _map = mapSprite.gameMap();
     collisionWorld.bindGameMap(_map);
     gravityWorld.bindGameMap(_map);
-    warrior = Warrior(collisionWorld, 80, 480, 80, 80);
+    warrior = Warrior(collisionWorld, _map, 80, 480, 80, 80);
 
     rat = Monster(collisionWorld, 80, 180, 80, 80);
 

@@ -7,11 +7,13 @@ import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
 import 'package:ui/data/game_tile_data.dart';
 import 'package:ui/frame/collision_world.dart';
+import 'package:ui/frame/game_map.dart';
 import 'package:ui/sprite/sprite.dart';
 import 'package:ui/sprite/sprite_tile.dart';
 
 class Warrior extends Sprite {
-  Warrior(collisionWorld, posX, posY, widgetWidth, widgetHeight)
+  GameMap gameMap;
+  Warrior(collisionWorld, this.gameMap, posX, posY, widgetWidth, widgetHeight)
       : super(
             GameSpriteWidgetData(WarriorTileData(), posX * 1.0, posY * 1.0,
                 widgetWidth * 1.0, widgetHeight * 1.0),
@@ -73,6 +75,8 @@ class Warrior extends Sprite {
   }
 
   void showMask(bool show) {
+    List<GameGridType> types = gameMap.getCollisionType(widgetData);
+    if (!types.contains(GameGridType.BUSH)) return;
     widgetData.maskTileData!.shown = show;
     widgetData.update();
   }
