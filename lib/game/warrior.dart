@@ -80,4 +80,16 @@ class Warrior extends Sprite {
     widgetData.maskTileData!.shown = show;
     widgetData.update();
   }
+
+  @override
+  void animate(int elapse) {
+    super.animate(elapse);
+    List<GameGridType> types = gameMap.getCollisionType(widgetData);
+    if (!types.contains(GameGridType.BUSH)) {
+      if (widgetData.maskTileData!.shown) {
+        widgetData.maskTileData!.shown = false;
+        widgetData.update();
+      }
+    }
+  }
 }
