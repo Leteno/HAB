@@ -13,5 +13,9 @@ class MouseTileData extends GameTileData {
       ..add(SpriteIndex(7, 0))
       ..add(SpriteIndex(1, 0));
     state2Animation[SpriteState.WALKING] = walkingAnimation;
+
+    AnimationData faillingAnimation = AnimationData();
+    faillingAnimation.animationIndexes.add(SpriteIndex(6, 0));
+    state2Animation[SpriteState.FAILING] = faillingAnimation;
   }
 }
