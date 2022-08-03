@@ -8,7 +8,7 @@ import 'package:ui/sprite/sprite.dart';
 
 import '../data/game_sprite_data.dart';
 
-enum GameGridType { BLOCK, BUSH, EMPTY }
+enum GameGridType { BLOCK, BUSH, OBJECT, EMPTY }
 
 typedef GetGridTypeFunction = GameGridType Function(int blockValue);
 
