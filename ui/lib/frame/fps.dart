@@ -15,7 +15,7 @@ class Fps {
     var current = DateTime.now();
     var fps = 1000 / (current.difference(lastTime).inMilliseconds);
     lastTime = current;
-    controller.value = fps.ceil();
+    controller.value = fps == double.infinity ? -1 : fps.ceil();
     controller.update();
   }
 
