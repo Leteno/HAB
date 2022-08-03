@@ -10,12 +10,19 @@ abstract class Sprite {
   CollisionWorld collisionWorld;
   GameSpriteWidgetData widgetData;
   Map<String, Animation> animationMap = {};
-  Sprite(this.widgetData, this.collisionWorld);
+  Sprite(this.widgetData, this.collisionWorld) {
+    // TODO(juzhen) magic code  = =)
+    double gridSize = 30;
+    movingSpeed = gridSize * 0.618;
+    distancePerMove = gridSize * 0.309;
+    jumpSpeed = gridSize * 2;
+    distancePerJump = 3 * gridSize;
+  }
 
-  double movingSpeed = 20;
-  double distancePerMove = 10;
-  double jumpSpeed = 100;
-  double distancePerJump = 200;
+  late double movingSpeed;
+  late double distancePerMove;
+  late double jumpSpeed;
+  late double distancePerJump;
 
   Widget build();
   // updateLogic will call first, then it is updateUIIfNeeded

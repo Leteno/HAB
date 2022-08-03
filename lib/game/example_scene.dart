@@ -5,6 +5,7 @@ import 'package:ui/frame/game_map.dart';
 import 'package:ui/frame/scene.dart';
 import 'package:ui/keyboard/game_event.dart';
 
+import '../data/simple_data.dart';
 import 'map01.dart';
 import 'warrior.dart';
 
@@ -15,13 +16,15 @@ class ExampleScene extends Scene {
   late Monster rat;
 
   ExampleScene() {
-    mapSprite = Map01(0, 0, 30, 30);
+    double gridSize = SimpleData.getInstance().gridSize;
+    mapSprite = Map01(0, 0, gridSize, gridSize);
     _map = mapSprite.gameMap();
     collisionWorld.bindGameMap(_map);
     gravityWorld.bindGameMap(_map);
-    warrior = Warrior(collisionWorld, _map, 0, 0, 40, 40);
+    warrior =
+        Warrior(collisionWorld, _map, 0, 0, gridSize / 0.618, gridSize / 0.618);
 
-    rat = Monster(collisionWorld, 80, 180, 40, 40);
+    rat = Monster(collisionWorld, 80, 180, gridSize / 0.618, gridSize / 0.618);
 
     addSprite(warrior);
     addSprite(rat);
