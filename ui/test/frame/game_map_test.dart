@@ -225,6 +225,10 @@ void main() {
         map.getCollisionType(SimpleGameSpriteWidgetData(5, 5, 10, 15),
             touchIncluded: true),
         [GameGridType.EMPTY, GameGridType.BLOCK]);
+    expect(
+        map.getCollisionType(SimpleGameSpriteWidgetData(5, 5, 10, 14.99999999),
+            touchIncluded: true),
+        [GameGridType.EMPTY, GameGridType.BLOCK]);
   });
 }
 

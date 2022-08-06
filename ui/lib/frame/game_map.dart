@@ -74,19 +74,25 @@ class GameMap {
       {bool touchIncluded = false}) {
     List<GameGridType> result = [];
     Rect area = widgetData.getCenteredCollisionArea();
+    if (touchIncluded) {
+      double error = 0.0001;
+      area = Rect.fromLTRB(area.left - error, area.top - error,
+          area.right + error, area.bottom + error);
+    }
 
     int startXIndex = (area.left / gridSizeX).floor();
     int endXIndex = (area.right / gridSizeX).floor();
     int startYIndex = (area.top / gridSizeY).floor();
     int endYIndex = (area.bottom / gridSizeY).floor();
 
-    // if (area.right, area.bottom) is percisely in grid boundary,
-    // endXIndex/endYIndex would be real number + 1.
-    // Such as (20, 20, 20, 20) in grid 20x20.
-    // it should be percisely position(1, 1)
-    // However, here would calcuated as (1,1)~(2,2)
-    // Here we do a small correction here.
-    if (!touchIncluded) {
+    if (touchIncluded) {
+    } else {
+      // if (area.right, area.bottom) is percisely in grid boundary,
+      // endXIndex/endYIndex would be real number + 1.
+      // Such as (20, 20, 20, 20) in grid 20x20.
+      // it should be percisely position(1, 1)
+      // However, here would calcuated as (1,1)~(2,2)
+      // Here we do a small correction here.
       if (Math.isSameInMath(endXIndex * gridSizeX, area.right)) {
         endXIndex--;
       }
