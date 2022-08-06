@@ -45,6 +45,8 @@ GameGridType _getGridTypeFunction(int blockValue) {
     return GameGridType.BUSH;
   } else if (blockValue == 719 || blockValue == 718) {
     return GameGridType.OBJECT;
+  } else if (blockValue == 362) {
+    return GameGridType.FIRE;
   }
   return GameGridType.BLOCK;
 }

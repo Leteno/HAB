@@ -84,12 +84,16 @@ class Warrior extends Sprite {
   @override
   void animate(int elapse) {
     super.animate(elapse);
-    List<GameGridType> types = gameMap.getCollisionType(widgetData);
+    List<GameGridType> types =
+        gameMap.getCollisionType(widgetData, touchIncluded: true);
     if (!types.contains(GameGridType.BUSH)) {
       if (widgetData.maskTileData!.shown) {
         widgetData.maskTileData!.shown = false;
         widgetData.update();
       }
+    }
+    if (types.contains(GameGridType.FIRE)) {
+      setBlink();
     }
   }
 }

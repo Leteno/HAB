@@ -8,7 +8,13 @@ import 'package:ui/sprite/sprite.dart';
 
 import '../data/game_sprite_data.dart';
 
-enum GameGridType { BLOCK, BUSH, OBJECT, EMPTY }
+enum GameGridType {
+  EMPTY,
+  BLOCK,
+  BUSH,
+  FIRE,
+  OBJECT,
+}
 
 typedef GetGridTypeFunction = GameGridType Function(int blockValue);
 
@@ -59,7 +65,11 @@ class GameMap {
     return getBlockTypeFunc(gridValue) == GameGridType.BLOCK;
   }
 
-  List<GameGridType> getCollisionType(GameSpriteWidgetData widgetData) {
+  // We want to know whether current sprite has collictions with the object
+  // in map.
+  // touchIncluded: if true, we will also see the block that are contiguous with.
+  List<GameGridType> getCollisionType(GameSpriteWidgetData widgetData,
+      {bool touchIncluded = false}) {
     List<GameGridType> result = [];
     Rect area = widgetData.getCenteredCollisionArea();
 
@@ -74,11 +84,13 @@ class GameMap {
     // it should be percisely position(1, 1)
     // However, here would calcuated as (1,1)~(2,2)
     // Here we do a small correction here.
-    if (Math.isSameInMath(endXIndex * gridSizeX, area.right)) {
-      endXIndex--;
-    }
-    if (Math.isSameInMath(endYIndex * gridSizeY, area.bottom)) {
-      endYIndex--;
+    if (!touchIncluded) {
+      if (Math.isSameInMath(endXIndex * gridSizeX, area.right)) {
+        endXIndex--;
+      }
+      if (Math.isSameInMath(endYIndex * gridSizeY, area.bottom)) {
+        endYIndex--;
+      }
     }
 
     // To virtual map coordinate, (x+1, y+1)

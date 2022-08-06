@@ -206,6 +206,25 @@ void main() {
         [GameGridType.EMPTY, GameGridType.BUSH, GameGridType.BLOCK]);
     expect(map.getCollisionType(SimpleGameSpriteWidgetData(30, 10, 20, 10)),
         [GameGridType.BUSH, GameGridType.EMPTY]);
+
+    expect(
+        map.getCollisionType(SimpleGameSpriteWidgetData(5, 5, 10, 10),
+            touchIncluded: true),
+        [GameGridType.EMPTY]);
+    expect(map.getCollisionType(SimpleGameSpriteWidgetData(5, 5, 15, 15)),
+        [GameGridType.EMPTY]);
+    expect(
+        map.getCollisionType(SimpleGameSpriteWidgetData(5, 5, 15, 15),
+            touchIncluded: true),
+        [GameGridType.EMPTY, GameGridType.BUSH, GameGridType.BLOCK]);
+    expect(
+        map.getCollisionType(SimpleGameSpriteWidgetData(5, 5, 15, 10),
+            touchIncluded: true),
+        [GameGridType.EMPTY, GameGridType.BUSH]);
+    expect(
+        map.getCollisionType(SimpleGameSpriteWidgetData(5, 5, 10, 15),
+            touchIncluded: true),
+        [GameGridType.EMPTY, GameGridType.BLOCK]);
   });
 }
 
