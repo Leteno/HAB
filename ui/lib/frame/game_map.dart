@@ -62,7 +62,9 @@ class GameMap {
   // Whether this block is occupied and nobody could pass it,
   // according to its value.
   bool isGridOccupied(int gridValue) {
-    return getBlockTypeFunc(gridValue) == GameGridType.BLOCK;
+    List<GameGridType> blockTypes = [GameGridType.BLOCK, GameGridType.FIRE];
+    GameGridType target = getBlockTypeFunc(gridValue);
+    return blockTypes.contains(target);
   }
 
   // We want to know whether current sprite has collictions with the object
