@@ -1,6 +1,7 @@
 import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
 import 'package:ui/frame/game_map.dart';
+import 'package:ui/physic/math.dart';
 import 'package:ui/sprite/sprite.dart';
 
 import '../data/game_tile_data.dart';
@@ -23,7 +24,7 @@ class GravityWorld {
   void _applyGravity(Sprite sprite) {
     GameSpriteWidgetData widgetData = sprite.widgetData;
     double distance = _map.fallingDistance(widgetData);
-    if (distance <= 0) return;
+    if (Math.isSameInMath(distance, 0)) return;
     double currentY = widgetData.posY;
     int duration = (distance * 1000 / gravitySpeed).ceil();
     DoubleAnimation animation = DoubleAnimation(duration, 0, distance);
