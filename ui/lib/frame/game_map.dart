@@ -74,10 +74,10 @@ class GameMap {
     // it should be percisely position(1, 1)
     // However, here would calcuated as (1,1)~(2,2)
     // Here we do a small correction here.
-    if (endXIndex * gridSizeX == area.right) {
+    if (Math.isSameInMath(endXIndex * gridSizeX, area.right)) {
       endXIndex--;
     }
-    if (endYIndex * gridSizeY == area.bottom) {
+    if (Math.isSameInMath(endYIndex * gridSizeY, area.bottom)) {
       endYIndex--;
     }
 
@@ -163,10 +163,10 @@ class GameMap {
     // it should be percisely position(1, 1)
     // However, here would calcuated as (1,1)~(2,2)
     // Here we do a small correction here.
-    if (endXIndex * gridSizeX == area.right) {
+    if (Math.isSameInMath(endXIndex * gridSizeX, area.right)) {
       endXIndex--;
     }
-    if (endYIndex * gridSizeY == area.bottom) {
+    if (Math.isSameInMath(endYIndex * gridSizeY, area.bottom)) {
       endYIndex--;
     }
 
@@ -223,7 +223,6 @@ class GameMap {
   }
 
   double fallingDistance(GameSpriteWidgetData widgetData) {
-    WonderingRegion region = WonderingRegion();
     Rect area = widgetData.getCenteredCollisionArea();
 
     int startXIndex = (area.left / gridSizeX).floor();
@@ -236,10 +235,10 @@ class GameMap {
     // it should be percisely position(1, 1)
     // However, here would calcuated as (1,1)~(2,2)
     // Here we do a small correction here.
-    if (endXIndex * gridSizeX == area.right) {
+    if (Math.isSameInMath(endXIndex * gridSizeX, area.right)) {
       endXIndex--;
     }
-    if (endYIndex * gridSizeY == area.bottom) {
+    if (Math.isSameInMath(endYIndex * gridSizeY, area.bottom)) {
       endYIndex--;
     }
 
@@ -278,10 +277,10 @@ class GameMap {
     // it should be percisely position(1, 1)
     // However, here would calcuated as (1,1)~(2,2)
     // Here we do a small correction here.
-    if (endXIndex * gridSizeX == area.right) {
+    if (Math.isSameInMath(endXIndex * gridSizeX, area.right)) {
       endXIndex--;
     }
-    if (endYIndex * gridSizeY == area.bottom) {
+    if (Math.isSameInMath(endYIndex * gridSizeY, area.bottom)) {
       endYIndex--;
     }
     // To virtual map coordinate, (x+1, y+1)
