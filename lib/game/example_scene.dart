@@ -33,8 +33,7 @@ class ExampleScene extends Scene {
     collisionWorld.addObserver(warrior);
     collisionWorld.addObserver(rat);
 
-    WonderingRegion region =
-        _map.getWonderingRegion(rat.widgetData, standGround: true);
+    WonderingRegion region = _map.getWonderingRegion(rat.widgetData);
     print(
         "rat would wonder ${region.leftAtMostOffset} to ${region.rightAtMostOffset}");
     var ratSpeed = 100;
