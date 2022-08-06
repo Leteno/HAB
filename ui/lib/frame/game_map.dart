@@ -214,8 +214,10 @@ class GameMap {
       rightAtMostGridCount = min(rightAtMostGridCount, gridCount);
     }
     // Here, area.right >= gridSizeX * endXIndex
-    double rightAtLeastOffset =
-        (gridSizeX - area.right % gridSizeX) % gridSizeX; // TODO(juzhen) perf
+    double rightAtLeastOffset = gridSizeX - area.right % gridSizeX;
+    if (Math.isSameInMath(rightAtLeastOffset, gridSizeX)) {
+      rightAtLeastOffset = 0;
+    }
     region.rightAtMostOffset =
         rightAtLeastOffset + rightAtMostGridCount * gridSizeX;
 
@@ -258,7 +260,7 @@ class GameMap {
       }
       gridBelowAtMost = min(gridBelowAtMost, gridCount);
     }
-    double atLeastOffset = (gridSizeY - area.bottom % gridSizeY) % gridSizeY;
+    double atLeastOffset = gridSizeY - area.bottom % gridSizeY;
     if (Math.isSameInMath(atLeastOffset, gridSizeY)) {
       atLeastOffset = 0;
     }
