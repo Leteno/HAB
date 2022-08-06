@@ -259,6 +259,9 @@ class GameMap {
       gridBelowAtMost = min(gridBelowAtMost, gridCount);
     }
     double atLeastOffset = (gridSizeY - area.bottom % gridSizeY) % gridSizeY;
+    if (Math.isSameInMath(atLeastOffset, gridSizeY)) {
+      atLeastOffset = 0;
+    }
     return atLeastOffset + gridBelowAtMost * gridSizeY;
   }
 

@@ -133,6 +133,13 @@ void main() {
     GameSpriteWidgetData widgetData4 =
         SimpleGameSpriteWidgetData(21, 11, 10, 10);
     expect(map.fallingDistance(widgetData4), 19);
+
+    GameSpriteWidgetData widgetData5 = SimpleGameSpriteWidgetData(0, 0, 20, 20);
+    expect(map.fallingDistance(widgetData5), 0);
+
+    GameSpriteWidgetData widgetData6 =
+        SimpleGameSpriteWidgetData(0, 0, 20, 20.000000000001);
+    expect(map.fallingDistance(widgetData6), 0);
   });
 
   test('hasCollision', () {
