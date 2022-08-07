@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:hab_repo/game/health_tile.dart';
 import 'package:hab_repo/game/monster.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/frame/game_map.dart';
@@ -14,6 +15,7 @@ class ExampleScene extends Scene {
   late GameMap _map;
   late Warrior warrior;
   late Monster rat;
+  late HealthTile healthTile;
 
   ExampleScene() {
     double gridSize = SimpleData.getInstance().gridSize;
@@ -32,6 +34,10 @@ class ExampleScene extends Scene {
     gravityWorld.registerListener(rat);
     collisionWorld.addObserver(warrior);
     collisionWorld.addObserver(rat);
+
+    healthTile = HealthTile();
+    healthTile.reposition(400, 10);
+    healthTile.healthController.update();
 
     WonderingRegion region = _map.getWonderingRegion(rat.widgetData);
     print(
@@ -99,6 +105,7 @@ class ExampleScene extends Scene {
         mapSprite.build(),
         warrior.build(),
         rat.build(),
+        healthTile.build(),
       ],
     );
   }
