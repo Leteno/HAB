@@ -14,14 +14,10 @@ class FlexibleSpriteData {
   List<FlexibleSpriteDataItem> items = [];
   FlexibleSpriteData(this.posX, this.posY);
 
-  State? _state;
-
-  bindState(State state) {
-    _state = state;
-  }
+  bool dirty = true;
 
   update() {
-    _state?.setState(() {});
+    dirty = true;
   }
 }
 

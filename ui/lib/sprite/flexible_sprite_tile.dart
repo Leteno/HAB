@@ -31,7 +31,6 @@ class _FlexibleSpriteTile extends State<FlexibleSpriteTile> {
   @override
   void initState() {
     super.initState();
-    widget.data.bindState(this);
     _updateImage();
   }
 
@@ -85,6 +84,10 @@ class _FlexibleSpriteTilePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+    if (data.dirty) {
+      data.dirty = false;
+      return true;
+    }
+    return false;
   }
 }
