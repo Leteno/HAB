@@ -36,8 +36,11 @@ class ExampleScene extends Scene {
     collisionWorld.addObserver(rat);
 
     healthTile = HealthTile();
+    healthTile.healthController.health = 5;
+    healthTile.healthController.currentHealth = 5;
     healthTile.reposition(400, 10);
     healthTile.healthController.update();
+    warrior.bindHealthTile(healthTile);
 
     WonderingRegion region = _map.getWonderingRegion(rat.widgetData);
     print(

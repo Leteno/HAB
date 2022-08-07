@@ -1,8 +1,10 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hab_repo/data/warrior_mask_tile_data.dart';
 import 'package:hab_repo/data/warrior_tile_data.dart';
+import 'package:hab_repo/game/health_tile.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
 import 'package:ui/data/game_tile_data.dart';
@@ -13,6 +15,7 @@ import 'package:ui/sprite/sprite_tile.dart';
 
 class Warrior extends Sprite {
   GameMap gameMap;
+  HealthTile? _healthTile;
   Warrior(collisionWorld, this.gameMap, posX, posY, widgetWidth, widgetHeight)
       : super(
             GameSpriteWidgetData(WarriorTileData(), posX * 1.0, posY * 1.0,
@@ -48,13 +51,10 @@ class Warrior extends Sprite {
 
   @override
   void onCollissionWith(Sprite sprite) {
-    setBlink();
+    onGetHurt(1);
   }
 
   void setBlink() {
-    if (animationMap.containsKey('blink')) {
-      return;
-    }
     if (widgetData.maskTileData != null && widgetData.maskTileData!.shown) {
       return;
     }
@@ -93,7 +93,24 @@ class Warrior extends Sprite {
       }
     }
     if (types.contains(GameGridType.FIRE)) {
-      setBlink();
+      onGetHurt(3);
     }
+  }
+
+  void onGetHurt(int damage) {
+    // When warrior is blink, he/she is invincible.
+    if (animationMap.containsKey('blink')) {
+      return;
+    }
+    setBlink();
+    if (_healthTile != null) {
+      _healthTile!.healthController.currentHealth =
+          max(_healthTile!.healthController.currentHealth - damage, 0);
+      _healthTile!.healthController.update();
+    }
+  }
+
+  void bindHealthTile(HealthTile tile) {
+    _healthTile = tile;
   }
 }
