@@ -6,6 +6,7 @@ import 'package:ui/sprite/tile_position.dart';
 
 class HealthTile {
   double heartSize = 12;
+  double margin = 2;
   late final FlexibleSpriteData _data;
   HealthController healthController = HealthController();
   HealthTile() {
@@ -13,14 +14,16 @@ class HealthTile {
     healthController.updateInternal = () {
       _data.items.clear();
       for (int i = 0; i < healthController.currentHealth; i++) {
-        _data.items.add(FlexibleSpriteDataItem(Rect.fromLTWH(69, 501, 6, 6),
-            Rect.fromLTWH(heartSize * i, 0, heartSize, heartSize)));
+        _data.items.add(FlexibleSpriteDataItem(
+            const Rect.fromLTWH(69, 501, 6, 6),
+            Rect.fromLTWH((heartSize + margin) * i, 0, heartSize, heartSize)));
       }
       for (int i = healthController.currentHealth;
           i < healthController.health;
           i++) {
-        _data.items.add(FlexibleSpriteDataItem(Rect.fromLTWH(85, 501, 6, 6),
-            Rect.fromLTWH(heartSize * i, 0, heartSize, heartSize)));
+        _data.items.add(FlexibleSpriteDataItem(
+            const Rect.fromLTWH(85, 501, 6, 6),
+            Rect.fromLTWH((heartSize + margin) * i, 0, heartSize, heartSize)));
       }
       _data.update();
     };
