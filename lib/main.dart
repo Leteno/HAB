@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart' hide Animation;
 import 'package:hab_repo/game/example_scene.dart';
+import 'package:hab_repo/game/game_over_scene.dart';
 import 'package:ui/frame/fps.dart';
 import 'package:ui/frame/scene.dart';
 import 'package:ui/keyboard/game_event.dart';
+
+import 'game/world.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,17 +42,25 @@ class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   late final Timer _timer;
   late Scene _currentScene;
+  late GameOverScene gameOverScene;
   Fps fps = Fps();
+
   @override
   void initState() {
     super.initState();
     _currentScene = ExampleScene();
+    gameOverScene = GameOverScene();
 
     var lastTime = DateTime.now();
     Timer.periodic(const Duration(milliseconds: 33), (Timer timer) {
       var currentTime = DateTime.now();
       int elapse = currentTime.difference(lastTime).inMilliseconds;
       lastTime = currentTime;
+
+      gameOverScene.setVisible(World.instance.isGameOver);
+      if (World.instance.isGameOver) {
+        return;
+      }
 
       // Animataion
       _currentScene.animate(elapse);
@@ -64,7 +75,12 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   void onKey(KeyEvent event) {
-    _currentScene.onKey(GameEvent.translate(event));
+    GameEventType gEvent = GameEvent.translate(event);
+    if (gameOverScene.isVisible()) {
+      gameOverScene.onKey(gEvent);
+      return;
+    }
+    _currentScene.onKey(gEvent);
   }
 
   @override
@@ -79,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage>
             left: 200,
             child: fps.build(),
           ),
+          Positioned(left: 150, top: 200, child: gameOverScene.build()),
         ]));
   }
 }

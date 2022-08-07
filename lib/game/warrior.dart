@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hab_repo/data/warrior_mask_tile_data.dart';
 import 'package:hab_repo/data/warrior_tile_data.dart';
 import 'package:hab_repo/game/health_tile.dart';
+import 'package:hab_repo/game/world.dart';
 import 'package:ui/animation/animation.dart';
 import 'package:ui/data/game_sprite_data.dart';
 import 'package:ui/data/game_tile_data.dart';
@@ -107,6 +108,9 @@ class Warrior extends Sprite {
       _healthTile!.healthController.currentHealth =
           max(_healthTile!.healthController.currentHealth - damage, 0);
       _healthTile!.healthController.update();
+      if (_healthTile!.healthController.currentHealth == 0) {
+        World.instance.isGameOver = true;
+      }
     }
   }
 
