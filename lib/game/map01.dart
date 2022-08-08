@@ -20,6 +20,12 @@ class Map01 {
 
     _gameMap = GameMap(_positions.toList(), 16, 16, gridSizeX, gridSizeY);
     _gameMap.getBlockTypeFunc = _getGridTypeFunction;
+    _gameMap.setExitPoint(0, 3, () {
+      goBack();
+    }, isVirtualIndex: true);
+    _gameMap.setExitPoint(0, 15, () {
+      goNext();
+    }, isVirtualIndex: true);
   }
 
   @override
@@ -35,6 +41,14 @@ class Map01 {
   Rect getCollisionArea() {
     return Rect.fromLTWH(_MapController.posX, _MapController.posY,
         _MapController.destWidth, _MapController.destHeight);
+  }
+
+  void goBack() {
+    print("Go back");
+  }
+
+  void goNext() {
+    print("Go Next");
   }
 }
 

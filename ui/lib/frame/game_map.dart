@@ -17,6 +17,7 @@ enum GameGridType {
 }
 
 typedef GetGridTypeFunction = GameGridType Function(int blockValue);
+typedef OnCollideExitPoint = void Function();
 
 class GameMap {
   List<int> mapData;
@@ -27,6 +28,7 @@ class GameMap {
   late List<List<int>> virtualMapData;
   late int vRowCount, vColumnCount;
   late GetGridTypeFunction getBlockTypeFunc;
+  List<ExitPointData> exitPointDataList = [];
   GameMap(this.mapData, this.columnCount, this.rowCount, this.gridSizeX,
       this.gridSizeY) {
     // virtualMap will have an extra line in left/top/right/bottom four direction
@@ -57,6 +59,24 @@ class GameMap {
 
   GameGridType defaultGetBlockType(int blockValue) {
     return blockValue != 0 ? GameGridType.BLOCK : GameGridType.EMPTY;
+  }
+
+  // When object collide with the exit point (indexX, indexY),
+  // func will be called.
+  // For some reason, we also want to support collide with the region that is
+  // out of bound, like the leftest corner.
+  // When warrior reach the nearest block, func will not be triggered.
+  // When warrior go left more furtur, however, being blocked as out of region,
+  // we want to call func at this moment.
+  // To achieve that, we need to mark a position that is out of boundary.
+  // Luckily, we have virtual positions, and isVirtualIndex would help this.
+  void setExitPoint(int indexX, int indexY, OnCollideExitPoint func,
+      {bool isVirtualIndex = false}) {
+    if (!isVirtualIndex) {
+      indexX++;
+      indexY++;
+    }
+    exitPointDataList.add(ExitPointData(indexX, indexY, func));
   }
 
   // Whether this block is occupied and nobody could pass it,
@@ -314,6 +334,13 @@ class GameMap {
     int vStartYIndex = startYIndex + 1;
     int vEndYIndex = endYIndex + 1;
 
+    for (var exitPoint in exitPointDataList) {
+      if (Math.between(vStartXIndex, vEndXIndex, exitPoint.vIndexX) &&
+          Math.between(vStartYIndex, vEndYIndex, exitPoint.vIndexY)) {
+        exitPoint.func.call();
+      }
+    }
+
     for (int y = vStartYIndex; y <= vEndYIndex; y++) {
       for (int x = vStartXIndex; x <= vEndXIndex; x++) {
         if (isGridOccupied(virtualMapData[y][x])) {
@@ -328,4 +355,12 @@ class GameMap {
 class WonderingRegion {
   double leftAtMostOffset = 0;
   double rightAtMostOffset = 0;
+}
+
+class ExitPointData {
+  int vIndexX;
+  int vIndexY;
+  OnCollideExitPoint func;
+
+  ExitPointData(this.vIndexX, this.vIndexY, this.func);
 }
