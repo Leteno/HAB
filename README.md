@@ -2,15 +2,16 @@
 
 A new Flutter project.
 
-## Getting Started
+# How to run
 
-This project is a starting point for a Flutter application.
+> flutter run ./lib/main.dart -d windows
 
-A few resources to get you started if this is your first Flutter project:
+# How to control
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Arrow Left/Right + Space for jump
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Up could trigger disguise when you're near the bush.
+
+like this:
+
+![gif](res/Demo.gif)
