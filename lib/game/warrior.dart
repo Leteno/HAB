@@ -52,7 +52,10 @@ class Warrior extends Sprite {
 
   @override
   void onCollissionWith(Sprite sprite) {
-    onGetHurt(1);
+    // Mask could disguise warrior, and prevent from hurting.
+    if (!widgetData.maskTileData!.shown) {
+      onGetHurt(1);
+    }
   }
 
   void setBlink() {
